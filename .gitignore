@@ -1,0 +1,74 @@
+# ── Environment & Secrets ──────────────────────────────────
+# Local env files — never commit credentials
+.env
+rawvault.env
+frontend/.env.production
+.local/
+.env.local
+.env.development
+.env.staging
+
+# IDE & Editor ─────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# OS ───────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Dependencies ─────────────────────────────────────────────
+# npm/yarn/pnpm — generated from package.json + lockfile
+node_modules/
+frontend/node_modules/
+infra/cdk/node_modules/
+infra/mock-api/node_modules/
+iac/node_modules/
+
+# Build Outputs ────────────────────────────────────────────
+# Frontend (Vite)
+frontend/dist/
+
+# Backend / Infra
+iac/dist/
+infra/cdk/dist/
+infra/cdk/cdk.out/
+infra/cdk/json/
+
+# Rust
+rust/target/
+infra/cdk/src/lambda/preview-generator-rust/target/
+infra/cdk/src/lambda/preview-generator/target/
+infra/cdk/src/lambda/preview-generator-bundle/bootstrap
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+mypy_cache/
+
+# Docker
+docker-compose.override.yml
+
+# Logs & Temporary Files
+*.log
+logs/
+tmp/
+temp/
+
+# Local Development Data
+localstack-data/
+
+# OS-generated git ignore artifacts
+.gitattributes

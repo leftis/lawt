@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "rawvault-dev-api",
+      "runtimeExecutable": "cargo",
+      "runtimeArgs": ["run", "-q", "--manifest-path", "backend/Cargo.toml", "-p", "rawvault-dev-server"],
+      "port": 3002
+    },
+    {
+      "name": "rawvault-timeline",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["VITE_UI=timeline", "VITE_API_BASE_URL=http://localhost:3002/api", "VITE_DEV_PORT=5174", "npm", "--prefix", "frontend", "run", "dev"],
+      "port": 5174
+    }
+  ]
+}

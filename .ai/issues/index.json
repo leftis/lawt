@@ -1,0 +1,424 @@
+[
+  {
+    "file": "01-remove-write-and-delete-access-to-the-photo-bucket-from-the-.md",
+    "title": "Remove write and delete access to the photo bucket from the legacy preview-generator role",
+    "labels": [
+      "security",
+      "infra",
+      "P0"
+    ]
+  },
+  {
+    "file": "02-validate-key-and-cap-batch-size-in-the-legacy-signer-lambdas.md",
+    "title": "Validate `key` and cap batch size in the legacy signer Lambdas",
+    "labels": [
+      "security",
+      "backend",
+      "P1"
+    ]
+  },
+  {
+    "file": "03-stop-the-legacy-lambdas-from-answering-with-access-control-a.md",
+    "title": "Stop the legacy Lambdas from answering with `Access-Control-Allow-Origin: *`",
+    "labels": [
+      "security",
+      "backend",
+      "P1"
+    ]
+  },
+  {
+    "file": "04-remove-the-preview-api-route-that-calls-the-rust-preview-lam.md",
+    "title": "Remove the `/preview` API route that calls the Rust preview Lambda directly",
+    "labels": [
+      "security",
+      "infra",
+      "P1"
+    ]
+  },
+  {
+    "file": "05-turn-off-api-gateway-data-tracing.md",
+    "title": "Turn off API Gateway data tracing",
+    "labels": [
+      "security",
+      "infra",
+      "P1"
+    ]
+  },
+  {
+    "file": "06-serve-renditions-privately-with-cloudfront-signed-cookies.md",
+    "title": "Serve renditions privately with CloudFront signed cookies",
+    "labels": [
+      "security",
+      "feature",
+      "infra",
+      "P2"
+    ]
+  },
+  {
+    "file": "07-token-handling-refresh-tokens-no-long-lived-token-in-localst.md",
+    "title": "Token handling: refresh tokens, no long-lived token in localStorage, one `?code` handler",
+    "labels": [
+      "security",
+      "frontend",
+      "P2"
+    ]
+  },
+  {
+    "file": "08-remove-the-node-20-lambdas-port-auth-to-rust-and-delete-the-.md",
+    "title": "Remove the Node 20 Lambdas: port `auth` to Rust and delete the rest",
+    "labels": [
+      "tech-debt",
+      "backend",
+      "P1"
+    ]
+  },
+  {
+    "file": "09-retire-the-legacy-gallery-ui-and-its-api.md",
+    "title": "Retire the legacy gallery UI and its API",
+    "labels": [
+      "tech-debt",
+      "frontend",
+      "P2"
+    ]
+  },
+  {
+    "file": "10-retire-the-legacy-rawvault-preview-generator-and-preview-tri.md",
+    "title": "Retire the legacy `rawvault-preview-generator` and `preview-trigger` functions",
+    "labels": [
+      "tech-debt",
+      "infra",
+      "P2"
+    ]
+  },
+  {
+    "file": "11-delete-the-unused-downloadcloudfront-distribution.md",
+    "title": "Delete the unused `DownloadCloudFront` distribution",
+    "labels": [
+      "tech-debt",
+      "infra",
+      "P3"
+    ]
+  },
+  {
+    "file": "12-clean-up-repo-leftovers.md",
+    "title": "Clean up repo leftovers",
+    "labels": [
+      "tech-debt",
+      "P3"
+    ]
+  },
+  {
+    "file": "13-update-the-makefile-and-docs-to-the-current-stack.md",
+    "title": "Update the Makefile and docs to the current stack",
+    "labels": [
+      "docs",
+      "tech-debt",
+      "P2"
+    ]
+  },
+  {
+    "file": "14-config-single-source-of-truth-generate-frontend-env-producti.md",
+    "title": "Config single source of truth: generate `frontend/.env.production` from stack outputs",
+    "labels": [
+      "infra",
+      "tech-debt",
+      "P2"
+    ]
+  },
+  {
+    "file": "15-add-ci-github-actions-for-rust-frontend-and-cdk-checks.md",
+    "title": "Add CI: GitHub Actions for Rust, frontend and CDK checks",
+    "labels": [
+      "ci",
+      "P1"
+    ]
+  },
+  {
+    "file": "16-add-tests-for-the-timeline-ui-hooks-and-views.md",
+    "title": "Add tests for the timeline UI hooks and views",
+    "labels": [
+      "test",
+      "frontend",
+      "P2"
+    ]
+  },
+  {
+    "file": "17-observability-alarms-structured-logs-and-a-cost-budget.md",
+    "title": "Observability: alarms, structured logs and a cost budget",
+    "labels": [
+      "infra",
+      "ops",
+      "P2"
+    ]
+  },
+  {
+    "file": "18-pipeline-handle-raw-files-with-no-embedded-preview.md",
+    "title": "Pipeline: handle RAW files with no embedded preview",
+    "labels": [
+      "pipeline",
+      "P2"
+    ]
+  },
+  {
+    "file": "19-pipeline-scheduled-run-and-a-lock-against-overlapping-runs.md",
+    "title": "Pipeline: scheduled run and a lock against overlapping runs",
+    "labels": [
+      "pipeline",
+      "infra",
+      "P2"
+    ]
+  },
+  {
+    "file": "20-pipeline-handle-deleted-renamed-and-changed-originals.md",
+    "title": "Pipeline: handle deleted, renamed and changed originals",
+    "labels": [
+      "pipeline",
+      "P2"
+    ]
+  },
+  {
+    "file": "21-verify-tiff-colour-and-raw-orientation-on-real-files-and-app.md",
+    "title": "Verify TIFF colour and RAW orientation on real files, and apply ICC profiles",
+    "labels": [
+      "pipeline",
+      "P2"
+    ]
+  },
+  {
+    "file": "22-decide-and-implement-heic-heif-support.md",
+    "title": "Decide and implement HEIC/HEIF support",
+    "labels": [
+      "pipeline",
+      "decision",
+      "P3"
+    ]
+  },
+  {
+    "file": "23-multi-select-in-the-timeline.md",
+    "title": "Multi-select in the timeline",
+    "labels": [
+      "feature",
+      "frontend",
+      "P1"
+    ]
+  },
+  {
+    "file": "24-expiring-share-links.md",
+    "title": "Expiring share links",
+    "labels": [
+      "feature",
+      "backend",
+      "frontend",
+      "P1"
+    ]
+  },
+  {
+    "file": "25-bin-mark-photos-for-deletion-and-keep-them-for-30-days.md",
+    "title": "Bin: mark photos for deletion and keep them for 30 days",
+    "labels": [
+      "feature",
+      "backend",
+      "frontend",
+      "decision",
+      "P1"
+    ]
+  },
+  {
+    "file": "26-search-by-camera-lens-iso-focal-length-and-year.md",
+    "title": "Search by camera, lens, ISO, focal length and year",
+    "labels": [
+      "feature",
+      "backend",
+      "frontend",
+      "P2"
+    ]
+  },
+  {
+    "file": "27-decide-iceberg-and-athena-or-keep-json-records-for-exif-sear.md",
+    "title": "Decide: Iceberg and Athena, or keep JSON records, for EXIF search",
+    "labels": [
+      "decision",
+      "P3"
+    ]
+  },
+  {
+    "file": "28-show-the-raw-jpeg-companion-in-the-viewer.md",
+    "title": "Show the RAW+JPEG companion in the viewer",
+    "labels": [
+      "feature",
+      "frontend",
+      "P3"
+    ]
+  },
+  {
+    "file": "29-viewer-upgrades-exif-panel-zoom-and-pan-swipe-on-phones.md",
+    "title": "Viewer upgrades: EXIF panel, zoom and pan, swipe on phones",
+    "labels": [
+      "feature",
+      "frontend",
+      "P2"
+    ]
+  },
+  {
+    "file": "30-image-delivery-polish-blurhash-placeholders-webp-thumbnails-.md",
+    "title": "Image delivery polish: blurhash placeholders, WebP thumbnails and `srcset`",
+    "labels": [
+      "performance",
+      "frontend",
+      "backend",
+      "P3"
+    ]
+  },
+  {
+    "file": "31-accessibility-and-responsive-pass-on-the-timeline.md",
+    "title": "Accessibility and responsive pass on the timeline",
+    "labels": [
+      "frontend",
+      "a11y",
+      "P2"
+    ]
+  },
+  {
+    "file": "32-favourites-and-albums.md",
+    "title": "Favourites and albums",
+    "labels": [
+      "feature",
+      "P3"
+    ]
+  },
+  {
+    "file": "33-download-a-selection-as-a-zip.md",
+    "title": "Download a selection as a zip",
+    "labels": [
+      "feature",
+      "backend",
+      "P3"
+    ]
+  },
+  {
+    "file": "34-duplicate-detection-by-content-hash.md",
+    "title": "Duplicate detection by content hash",
+    "labels": [
+      "feature",
+      "pipeline",
+      "P3"
+    ]
+  },
+  {
+    "file": "35-validate-demand-before-building-the-product.md",
+    "title": "Validate demand before building the product",
+    "labels": [
+      "product",
+      "decision",
+      "P1"
+    ]
+  },
+  {
+    "file": "36-decide-the-product-basics.md",
+    "title": "Decide the product basics",
+    "labels": [
+      "product",
+      "decision",
+      "P1"
+    ]
+  },
+  {
+    "file": "37-epic-multi-tenancy-foundation.md",
+    "title": "Epic: multi-tenancy foundation",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "38-epic-storage-backend-abstraction-and-migration.md",
+    "title": "Epic: storage backend abstraction and migration",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "39-epic-web-uploader.md",
+    "title": "Epic: web uploader",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "40-epic-desktop-uploader-tauri-rust-core-react-typescript-ui.md",
+    "title": "Epic: desktop uploader (Tauri, Rust core, React + TypeScript UI)",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "41-epic-event-driven-processing-with-a-queue-and-dead-letter-qu.md",
+    "title": "Epic: event-driven processing with a queue and dead-letter queue",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "42-epic-billing-plans-quotas-metering-and-vat.md",
+    "title": "Epic: billing, plans, quotas, metering and VAT",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "43-epic-account-export-deletion-and-retention.md",
+    "title": "Epic: account export, deletion and retention",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "44-epic-abuse-handling-and-legal-basics.md",
+    "title": "Epic: abuse handling and legal basics",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "45-epic-importers-for-google-takeout-amazon-photos-and-flickr.md",
+    "title": "Epic: importers for Google Takeout, Amazon Photos and Flickr",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "46-epic-pwa-and-mobile.md",
+    "title": "Epic: PWA and mobile",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  },
+  {
+    "file": "47-epic-marketing-site-docs-and-support-tooling.md",
+    "title": "Epic: marketing site, docs and support tooling",
+    "labels": [
+      "epic",
+      "product",
+      "P3"
+    ]
+  }
+]

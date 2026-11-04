@@ -1,0 +1,22 @@
+[package]
+name = "rawvault-pipeline"
+description = "Indexing pipeline: plan new photos, render them into the derived bucket, publish the timeline."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+rawvault-common = { path = "../common" }
+rawvault-processor = { path = "../processor" }
+chrono = { workspace = true }
+futures = "0.3"
+serde = { workspace = true }
+serde_json = "1"
+tokio = { version = "1", features = ["rt", "macros"] }
+
+[lints]
+workspace = true
+
+[dev-dependencies]
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "tiff"] }

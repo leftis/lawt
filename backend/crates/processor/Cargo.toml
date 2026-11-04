@@ -1,0 +1,22 @@
+[package]
+name = "rawvault-processor"
+description = "Decodes photos of any supported format and produces thumbnail, medium and full JPEG renditions."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[features]
+default = ["raw"]
+# Camera RAW support via rawler (large dependency; disable for fast iteration on other formats).
+raw = ["dep:rawler"]
+
+[dependencies]
+rawvault-common = { path = "../common" }
+chrono = { workspace = true }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "tiff", "webp", "gif", "bmp"] }
+kamadak-exif = "0.6"
+rawler = { version = "0.7", optional = true }
+
+[lints]
+workspace = true

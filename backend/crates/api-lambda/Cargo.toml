@@ -1,0 +1,21 @@
+[package]
+name = "rawvault-api-lambda"
+description = "AWS Lambda entrypoint for the RawVault API: serves the timeline read model from S3."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "api"
+path = "src/main.rs"
+
+[dependencies]
+rawvault-api = { path = "../api" }
+aws-config = { version = "1", default-features = false, features = ["behavior-version-latest", "rt-tokio", "rustls"] }
+aws-sdk-s3 = { version = "1", default-features = false, features = ["behavior-version-latest", "rt-tokio", "rustls"] }
+lambda_http = "0.14"
+tokio = { version = "1", features = ["macros"] }
+
+[lints]
+workspace = true

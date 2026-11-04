@@ -1,0 +1,18 @@
+{
+  "name": "rawvault-cdk",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "echo \"Build step\"",
+    "synth": "cdk synth",
+    "bootstrap": "cdk bootstrap",
+    "deploy": "cdk deploy --all",
+    "destroy": "cdk destroy --all"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.265.0",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.1126.0"
+  }
+}

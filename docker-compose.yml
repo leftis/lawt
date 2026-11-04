@@ -1,0 +1,85 @@
+# ──────────────────────────────────────────────
+# RawVault — Local Development Stack
+# ──────────────────────────────────────────────
+# Runs:
+#   1. LocalStack      → Local AWS (S3, Cognito, Lambda, API Gateway mock)
+#   2. Mock API Server → Full REST API mock for frontend dev (no AWS needed)
+#
+# Usage:
+#   docker compose up -d          # Start all services
+#   docker compose down           # Stop everything
+#   docker compose logs -f mock   # View mock server logs
+# ──────────────────────────────────────────────
+services:
+  # ── LocalStack: Local AWS ───────────────────
+  localstack:
+    image: localstack/localstack:3.8
+    container_name: rawvault-localstack
+    ports:
+      - "4566:4566"       # LocalStack API
+      - "4571:4571"       # LocalStack HTTPS
+    environment:
+      - SERVICES=s3,cognito-idp,cognito-identity,lambda,iam,logs
+      - DEFAULT_REGION=${LOCALSTACK_AWS_REGION:-us-east-1}
+      - AWS_ACCESS_KEY_ID=${LOCALSTACK_AWS_ACCESS_KEY_ID:-test}
+      - AWS_SECRET_ACCESS_KEY=${LOCALSTACK_AWS_SECRET_ACCESS_KEY:-test}
+      - LAMBDA_EXECUTOR=local
+      - LAMBDA_RUNTIME_ENVIRONMENT_TIMEOUT=120
+      - DATA_DIR=${DATA_DIR:-/tmp/localstack-data}
+      - PORT_WEB_UI=4566
+    volumes:
+      - localstack-data:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ── Mock API Server: Full local backend ─────
+  mock-api:
+    image: node:24-alpine
+    container_name: rawvault-mock-api
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./infra/mock-api:/app
+    command: >
+      sh -c "npm install --production 2>&1 && node index.js"
+    environment:
+      - MOCK_PORT=3001
+      - MOCK_BUCKET_NAME=${EXISTING_BUCKET_NAME:-rawvault-mock}
+      - MOCK_API_BASE_URL=http://localhost:3001/api
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── Frontend: Vite dev server ───────────────
+  frontend:
+    image: node:24-alpine
+    container_name: rawvault-frontend
+    working_dir: /app
+    ports:
+      - "${VITE_DEV_PORT:-5173}:${VITE_DEV_PORT:-5173}"
+    volumes:
+      - ./frontend:/app
+      - frontend-node-modules:/app/node_modules
+    command: sh -c "npm install 2>&1 && npx vite --host 0.0.0.0 --port ${VITE_DEV_PORT:-5173}"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:3001/api
+      - VITE_DEV_PORT=${VITE_DEV_PORT:-5173}
+    depends_on:
+      mock-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:${VITE_DEV_PORT:-5173}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  localstack-data:
+  frontend-node-modules:

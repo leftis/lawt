@@ -1,0 +1,690 @@
+/* ──────────────────────────────────────────────
+   RawVault — Global Styles
+   ────────────────────────────────────────────── */
+
+:root {
+  --bg-primary: #0d0d0d;
+  --bg-secondary: #1a1a1a;
+  --bg-card: #1a1a1a;
+  --bg-card-hover: #222222;
+  --border-color: #2a2a2a;
+  --text-primary: #e8e8e8;
+  --text-secondary: #888888;
+  --accent: #e94560;
+  --accent-hover: #f05570;
+  --accent-subtle: rgba(233, 69, 96, 0.15);
+  --success: #2ecc71;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --transition: all 0.2s ease;
+  --font-mono: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ── Utility ────────────────────────────────── */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Buttons ────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+}
+
+.btn-icon {
+  padding: 8px;
+  border-radius: var(--radius);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+/* ── Input ──────────────────────────────────── */
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  transition: var(--transition);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* ── Cards ──────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.card:hover {
+  border-color: rgba(233, 69, 96, 0.5);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Loading spinner ────────────────────────── */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Header ─────────────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13, 13, 13, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 24px;
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: white;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.user-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+}
+
+/* ── Login screen ───────────────────────────── */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background: radial-gradient(ellipse at top, #1a1a2e 0%, var(--bg-primary) 70%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-lg);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-logo {
+  width: 56px;
+  height: 56px;
+  background: var(--accent);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  color: white;
+  margin: 0 auto 16px;
+}
+
+.login-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.login-header p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-form .input {
+  padding: 14px 16px;
+}
+
+.login-error {
+  color: var(--accent);
+  font-size: 0.8125rem;
+  text-align: center;
+  min-height: 20px;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* ── Gallery ────────────────────────────────── */
+.gallery-page {
+  padding: 24px 0;
+  min-height: calc(100vh - 64px);
+}
+
+.gallery-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.gallery-toolbar h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.gallery-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-select {
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition);
+}
+
+.filter-select:focus {
+  border-color: var(--accent);
+}
+
+.filter-select option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Dark mode: select options need explicit styling */
+.filter-select option {
+  background: #1a1a1a;
+  color: #e8e8e8;
+}
+
+/* ── Image Grid ─────────────────────────────── */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* ── Masonry Layout (CSS columns) — tight, no gaps ──── */
+.image-grid.masonry {
+  display: block;
+  column-count: 3;
+  column-gap: 4px;
+  padding: 4px;
+  margin: 0;
+}
+
+/* Masonry cards: no spacing between */
+.image-grid.masonry .image-card {
+  break-inside: avoid;
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Image preview fills entire card */
+.image-grid.masonry .image-card .image-preview {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Responsive: 3 cols on medium screens */
+@media (max-width: 1200px) {
+  .image-grid.masonry {
+    column-count: 3;
+  }
+}
+
+/* Responsive: 2 cols on tablets */
+@media (max-width: 768px) {
+  .image-grid.masonry {
+    column-count: 2;
+  }
+}
+
+/* Responsive: 2 cols on mobile */
+@media (max-width: 480px) {
+  .image-grid.masonry {
+    column-count: 2;
+  }
+}
+
+/* ── Lazy loading fade-in ──────────────────── */
+.image-preview img {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-preview img.loaded {
+  opacity: 1;
+}
+
+/* Fade in previews that become visible */
+.image-preview.fade-in img,
+.image-preview.fade-in:has(img.loaded) {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.image-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.image-card:hover {
+  border-color: rgba(233, 69, 96, 0.3);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Masonry Layout (CSS columns) — tight, no gaps ──── */
+
+.image-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+/* Compact mode: remove aspect-ratio so images use natural height */
+.image-grid.masonry .image-preview {
+  aspect-ratio: auto;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: none;
+}
+
+.image-card:hover .image-preview img {
+  transform: none;
+}
+
+.image-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.image-info {
+  padding: 14px 16px;
+}
+
+.image-name {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.image-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.image-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 16px 14px;
+}
+
+/* ── Resolution Toggle ──────────────────────── */
+.res-toggle {
+  display: flex;
+  align-items: center;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2px;
+  gap: 0;
+  font-size: 0.6875rem;
+}
+
+.res-toggle-btn {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 18px;
+  font-size: 0.6875rem;
+  cursor: pointer;
+  transition: var(--transition);
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.res-toggle-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* ── Gallery view mode ──────────────────────── */
+.view-toggle {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 2px;
+}
+
+.view-toggle button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.view-toggle button.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* ── Image View (fullscreen) ────────────────── */
+.image-viewer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.image-viewer-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1001;
+}
+
+.image-viewer-content {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.image-viewer-info {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.image-viewer-name {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.image-viewer-meta {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* ── Empty state ────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+
+.empty-state h3 {
+  font-size: 1.125rem;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* ── Responsive ─────────────────────────────── */
+@media (max-width: 1200px) {
+  .image-grid:not(.masonry) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .image-grid:not(.masonry) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .gallery-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .login-card {
+    padding: 24px;
+  }
+
+  .header-inner {
+    height: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-grid:not(.masonry) {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-filters {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+}
+
+/* ── Compact mode (masonry) — must come last to override base .image-card ── */
+.image-card.compact {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 2px !important;
+  background: transparent !important;
+  transition: none !important;
+}
+
+.image-card.compact:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}

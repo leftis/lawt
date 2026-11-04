@@ -1,0 +1,310 @@
+/* Timeline UI. Uses the theme variables from styles.css. */
+
+.tl-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-primary);
+}
+
+.tl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.tl-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.tl-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tl-check {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.tl-count {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.tl-scroll {
+  position: absolute;
+  inset: 0;
+  /* Contain the sticky headers' z-index so nothing inside can climb above the scrubber. */
+  isolation: isolate;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.tl-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.tl-canvas {
+  position: relative;
+  width: 100%;
+}
+
+.tl-section {
+  position: absolute;
+}
+
+.tl-day {
+  height: 100%;
+}
+
+.tl-day-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(var(--bg-primary) 70%, transparent);
+}
+.tl-day-header span {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.tl-row {
+  display: flex;
+}
+
+.tl-tile {
+  position: relative;
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: zoom-in;
+  color: var(--text-secondary);
+}
+.tl-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tl-tile:hover,
+.tl-tile:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.tl-tile-ext {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+.tl-badge {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.tl-skeleton {
+  height: calc(100% - 48px - 12px);
+  border-radius: 3px;
+  background: var(--bg-secondary);
+  opacity: 0.6;
+}
+
+.tl-scrubber {
+  /* Above the sticky day headers (z-index 2) so the date label never slips under them. */
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  right: 0;
+  bottom: 8px;
+  width: 72px;
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+}
+.tl-mark {
+  position: absolute;
+  right: 12px;
+  transform: translateY(-50%);
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+.tl-mark.year {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.tl-thumb {
+  position: absolute;
+  right: 0;
+  width: 6px;
+  height: 22px;
+  margin-top: -11px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+.tl-thumb-label {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.tl-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 16px;
+  color: var(--text-secondary);
+}
+
+.tl-toast {
+  padding: 6px 16px;
+  background: var(--accent-subtle);
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+/* Viewer */
+.tl-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.94);
+}
+.tl-viewer-img {
+  max-width: 96vw;
+  max-height: calc(100vh - 96px);
+  object-fit: contain;
+}
+.tl-viewer-close,
+.tl-viewer-nav {
+  position: absolute;
+  border: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  border-radius: 999px;
+}
+.tl-viewer-close {
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.125rem;
+}
+.tl-viewer-nav {
+  top: 50%;
+  width: 48px;
+  height: 64px;
+  margin-top: -32px;
+  font-size: 2rem;
+}
+.tl-viewer-nav.prev {
+  left: 12px;
+}
+.tl-viewer-nav.next {
+  right: 12px;
+}
+.tl-viewer-nav:disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+.tl-viewer-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: #fff;
+}
+.tl-viewer-bar div:first-child {
+  display: flex;
+  flex-direction: column;
+}
+.tl-viewer-bar span {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+.tl-viewer-actions {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .tl-header {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .tl-controls {
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+  .tl-count {
+    display: none;
+  }
+  .tl-logo {
+    font-size: 0.9375rem;
+  }
+  .tl-viewer-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
