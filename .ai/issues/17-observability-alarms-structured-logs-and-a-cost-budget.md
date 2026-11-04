@@ -3,7 +3,7 @@ Nothing tells the owner when the API fails or the pipeline errors, or when costs
 
 ## What to do
 - Use `tracing` JSON logs in the Rust Lambdas with key, outcome and duration, and no tokens.
-- CloudWatch alarms: API 5xx rate, `rawvault-api` errors, `rawvault-pipeline` errors.
+- CloudWatch alarms: API 5xx rate, `lawt-api` errors, `lawt-pipeline` errors.
 - An AWS Budget with an email alert.
 
 ## Done when

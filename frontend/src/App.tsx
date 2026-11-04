@@ -1,5 +1,5 @@
 /**
- * RawVault — Main App
+ * lawt — Main App
  * ─────────────────────
  * Handles routing between login and gallery views.
  */
@@ -15,7 +15,7 @@ import TimelineView from "./timeline/TimelineView";
  * redirect drops the query string).
  */
 function useTimelineUi(): boolean {
-  const KEY = "rawvault_ui";
+  const KEY = "lawt_ui";
   const defaultIsTimeline = import.meta.env.VITE_UI !== "legacy";
   const requested = new URLSearchParams(window.location.search).get("ui");
   try {
@@ -65,7 +65,7 @@ export default function App() {
   useEffect(() => {
     const checkAuth = () => {
       const hash = window.location.hash;
-      const token = localStorage.getItem("rawvault_token");
+      const token = localStorage.getItem("lawt_token");
       if (hash === "#login" || !token) {
         setIsAuthenticated(false);
       } else {

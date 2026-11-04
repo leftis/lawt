@@ -34,8 +34,8 @@ pub use record::{Record, Status, record_key};
 #[cfg(test)]
 mod tests {
     use image::ImageFormat;
-    use rawvault_common::IdSalt;
-    use rawvault_common::readmodel::INDEX_KEY;
+    use lawt_common::IdSalt;
+    use lawt_common::readmodel::INDEX_KEY;
 
     use super::*;
     use crate::testing::{MemDerived, MemOriginals, image_bytes};
@@ -93,13 +93,11 @@ mod tests {
 
         // Renditions exist for rendered photos; the JPEG original gets no derived "full".
         let keys = derived.keys();
-        let jpeg_id =
-            rawvault_common::AssetId::for_asset(&IdSalt::insecure_dev(), "100RICOH", "A1");
-        assert!(keys.contains(&rawvault_common::Rendition::Thumbnail.derived_key(&jpeg_id)));
-        assert!(!keys.contains(&rawvault_common::Rendition::Full.derived_key(&jpeg_id)));
-        let tiff_id =
-            rawvault_common::AssetId::for_asset(&IdSalt::insecure_dev(), "101RICOH", "B1");
-        assert!(keys.contains(&rawvault_common::Rendition::Full.derived_key(&tiff_id)));
+        let jpeg_id = lawt_common::AssetId::for_asset(&IdSalt::insecure_dev(), "100RICOH", "A1");
+        assert!(keys.contains(&lawt_common::Rendition::Thumbnail.derived_key(&jpeg_id)));
+        assert!(!keys.contains(&lawt_common::Rendition::Full.derived_key(&jpeg_id)));
+        let tiff_id = lawt_common::AssetId::for_asset(&IdSalt::insecure_dev(), "101RICOH", "B1");
+        assert!(keys.contains(&lawt_common::Rendition::Full.derived_key(&tiff_id)));
 
         let out = publish(&derived).await.unwrap();
         assert_eq!(

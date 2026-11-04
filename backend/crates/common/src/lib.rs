@@ -1,4 +1,4 @@
-//! Pure domain logic shared by all RawVault backend Lambdas.
+//! Pure domain logic shared by all lawt backend Lambdas.
 //!
 //! This crate performs no I/O and talks to no AWS service, so everything in
 //! it is unit-testable offline. It is the single source of truth for:

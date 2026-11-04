@@ -1,9 +1,9 @@
 ---
-name: rawvault-frontend
-description: Use when editing anything under frontend/ in RawVault (React 19 + Vite gallery UI, api.js, Gallery/ImageCard components, Cognito login flow, image loading performance).
+name: lawt-frontend
+description: Use when editing anything under frontend/ in lawt (React 19 + Vite gallery UI, api.js, Gallery/ImageCard components, Cognito login flow, image loading performance).
 ---
 
-# RawVault frontend
+# lawt frontend
 
 React 19 + Vite 6, **TypeScript (strict) is the standard**; existing files are still JSX and are migrated when touched. No router or test runner yet. Source: `frontend/src/`. Read `docs/ARCHITECTURE.md` (Frontend section) first.
 

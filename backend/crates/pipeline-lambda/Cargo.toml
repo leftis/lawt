@@ -1,5 +1,5 @@
 [package]
-name = "rawvault-pipeline-lambda"
+name = "lawt-pipeline-lambda"
 description = "AWS Lambda that plans, renders and publishes the timeline. Invoked manually by the owner."
 version.workspace = true
 edition.workspace = true
@@ -11,8 +11,8 @@ name = "pipeline"
 path = "src/main.rs"
 
 [dependencies]
-rawvault-common = { path = "../common" }
-rawvault-pipeline = { path = "../pipeline" }
+lawt-common = { path = "../common" }
+lawt-pipeline = { path = "../pipeline" }
 aws-config = { version = "1", default-features = false, features = ["behavior-version-latest", "rt-tokio", "rustls"] }
 aws-sdk-s3 = { version = "1", default-features = false, features = ["behavior-version-latest", "rt-tokio", "rustls"] }
 chrono = { workspace = true }

@@ -1,16 +1,16 @@
-# RawVault Architecture (as built)
+# lawt Architecture (as built)
 
 Last updated 2026-09-25 after the timeline deploy. Live state was checked read-only (CloudFormation, API Gateway, Lambda config); the photo bucket was never touched.
 
 ## Timeline architecture (new, deployed; pipeline function not yet enabled)
 ```
 Browser (React + TypeScript SPA)
-  ├─ GET /timeline, /timeline/months/{YYYY-MM}  ─► API Gateway (Cognito ID token) ─► rawvault-api (Rust) ─► derived bucket index/*.json
+  ├─ GET /timeline, /timeline/months/{YYYY-MM}  ─► API Gateway (Cognito ID token) ─► lawt-api (Rust) ─► derived bucket index/*.json
   └─ <img src=CDN/derived/{id}/thumbnail|medium|full.jpeg> ─► rendition CDN (CloudFront, OAC, /derived/* only) ─► derived bucket
 
-rawvault-pipeline (Rust, manual invoke, NOT deployed until -c enablePipeline=true)
+lawt-pipeline (Rust, manual invoke, NOT deployed until -c enablePipeline=true)
   plan:    list `all images/` (read-only)  ─► which photos lack a record
-  run:     GET original ─► rawvault-processor ─► derived/{id}/{thumbnail,medium,full}.jpeg + records/{id}.json ─► publish
+  run:     GET original ─► lawt-processor ─► derived/{id}/{thumbnail,medium,full}.jpeg + records/{id}.json ─► publish
   publish: records/* ─► index/timeline.json + index/months/YYYY-MM.json
 Photo bucket <photo-bucket>: read-only for the pipeline role; nothing else references it except the legacy Lambdas.
 ```
@@ -55,7 +55,7 @@ A second CloudFront distribution (`DownloadCloudFront`, OAI) fronts the photo bu
 ## Preview pipeline
 1. User opens gallery → `GET /images` (whole gallery or all objects).
 2. Cards call batch signer for `thumbnail`; `preview_exists=false` → placeholder + "generate" affordance.
-3. Generation is **manual**: per-image or multi-select batch (Gallery.jsx: concurrency 3, 500ms stagger, job persisted in localStorage `rawvaultBatchJob`, resumes on reload) → `/preview-trigger` → async invoke Rust Lambda `{key}`.
+3. Generation is **manual**: per-image or multi-select batch (Gallery.jsx: concurrency 3, 500ms stagger, job persisted in localStorage `lawtBatchJob`, resumes on reload) → `/preview-trigger` → async invoke Rust Lambda `{key}`.
 4. Rust: download original → decode (rawler full decode, fallback embedded JPEG; `image` for TIFF/JPEG/PNG) → upload thumbnail, medium, full. On failure a placeholder PNG is written **under the `.jpeg` keys** (so a failed decode looks like "exists").
 5. No S3 event trigger is configured, though the Rust handler supports S3 events.
 

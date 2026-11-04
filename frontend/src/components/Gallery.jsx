@@ -10,7 +10,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import ImageCard from "./ImageCard";
 import { listImages, getGalleryNames, downloadImage, getPreviewUrl, getMediumUrl, formatSize, getColor, regeneratePreview, getPreviewDownloadUrl, batchGetDownloadUrls, getFullJpegUrl } from "../api";
 
-const BATCH_JOB_KEY = "rawvaultBatchJob";
+const BATCH_JOB_KEY = "lawtBatchJob";
 const CONCURRENCY = 3;
 const STAGGER_DELAY = 500; // ms between batches
 

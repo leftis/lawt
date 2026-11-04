@@ -3,7 +3,7 @@
 // Rust guideline compliant 2026-07-03
 
 use futures::stream::{self, StreamExt};
-use rawvault_common::readmodel::{self, MONTHS_PREFIX};
+use lawt_common::readmodel::{self, MONTHS_PREFIX};
 
 use crate::ports::{Derived, PortError};
 use crate::record::{RECORD_PREFIX, Record};

@@ -6,7 +6,7 @@ use std::backtrace::Backtrace;
 use std::fmt::{self, Display, Formatter};
 
 use chrono::NaiveDateTime;
-use rawvault_common::OriginalKey;
+use lawt_common::OriginalKey;
 
 /// Size and modification time of one listed object.
 #[derive(Clone, Debug, PartialEq, Eq)]

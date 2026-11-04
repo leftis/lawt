@@ -3,7 +3,7 @@
 // Rust guideline compliant 2026-07-03
 
 use http::{Method, StatusCode};
-use rawvault_common::MonthKey;
+use lawt_common::MonthKey;
 use serde::Serialize;
 
 use crate::library::Library;
@@ -21,7 +21,7 @@ const MONTH_CACHE: &str = "private, max-age=300, stale-while-revalidate=600";
 ///
 /// # Examples
 /// ```
-/// use rawvault_api::allowed_origin;
+/// use lawt_api::allowed_origin;
 /// assert_eq!(allowed_origin(Some("https://a.example"), "https://a.example"), Some("https://a.example"));
 /// assert_eq!(allowed_origin(Some("https://evil.example"), "https://a.example"), None);
 /// assert_eq!(allowed_origin(None, "https://a.example"), None);
@@ -74,8 +74,8 @@ impl ApiResponse {
 /// # Examples
 /// ```
 /// use http::{Method, StatusCode};
-/// # async fn demo(lib: &impl rawvault_api::Library) {
-/// let res = rawvault_api::handle(lib, &Method::GET, "/health").await;
+/// # async fn demo(lib: &impl lawt_api::Library) {
+/// let res = lawt_api::handle(lib, &Method::GET, "/health").await;
 /// assert_eq!(res.status, StatusCode::OK);
 /// # }
 /// ```
@@ -121,7 +121,7 @@ fn storage_failure() -> ApiResponse {
 
 #[cfg(test)]
 mod tests {
-    use rawvault_common::{MonthPage, TimelineIndex};
+    use lawt_common::{MonthPage, TimelineIndex};
 
     use super::*;
     use crate::library::StoreError;

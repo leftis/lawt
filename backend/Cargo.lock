@@ -1938,6 +1938,94 @@ dependencies = [
 ]
 
 [[package]]
+name = "lawt-api"
+version = "0.1.0"
+dependencies = [
+ "http 1.5.0",
+ "lawt-common",
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
+name = "lawt-api-lambda"
+version = "0.1.0"
+dependencies = [
+ "aws-config",
+ "aws-sdk-s3",
+ "lambda_http",
+ "lawt-api",
+ "tokio",
+]
+
+[[package]]
+name = "lawt-common"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "hmac 0.12.1",
+ "serde",
+ "serde_json",
+ "sha2 0.10.9",
+ "ts-rs",
+]
+
+[[package]]
+name = "lawt-dev-server"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "chrono",
+ "http 1.5.0",
+ "image",
+ "lawt-api",
+ "lawt-common",
+ "tokio",
+ "tower-http",
+]
+
+[[package]]
+name = "lawt-pipeline"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "futures",
+ "image",
+ "lawt-common",
+ "lawt-processor",
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
+name = "lawt-pipeline-lambda"
+version = "0.1.0"
+dependencies = [
+ "aws-config",
+ "aws-sdk-s3",
+ "chrono",
+ "lambda_runtime",
+ "lawt-common",
+ "lawt-pipeline",
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
+name = "lawt-processor"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "image",
+ "kamadak-exif",
+ "lawt-common",
+ "rawler",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2417,94 +2505,6 @@ dependencies = [
  "uuid",
  "weezl",
  "zerocopy",
-]
-
-[[package]]
-name = "rawvault-api"
-version = "0.1.0"
-dependencies = [
- "http 1.5.0",
- "rawvault-common",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "rawvault-api-lambda"
-version = "0.1.0"
-dependencies = [
- "aws-config",
- "aws-sdk-s3",
- "lambda_http",
- "rawvault-api",
- "tokio",
-]
-
-[[package]]
-name = "rawvault-common"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "hmac 0.12.1",
- "serde",
- "serde_json",
- "sha2 0.10.9",
- "ts-rs",
-]
-
-[[package]]
-name = "rawvault-dev-server"
-version = "0.1.0"
-dependencies = [
- "axum",
- "chrono",
- "http 1.5.0",
- "image",
- "rawvault-api",
- "rawvault-common",
- "tokio",
- "tower-http",
-]
-
-[[package]]
-name = "rawvault-pipeline"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "futures",
- "image",
- "rawvault-common",
- "rawvault-processor",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "rawvault-pipeline-lambda"
-version = "0.1.0"
-dependencies = [
- "aws-config",
- "aws-sdk-s3",
- "chrono",
- "lambda_runtime",
- "rawvault-common",
- "rawvault-pipeline",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "rawvault-processor"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "image",
- "kamadak-exif",
- "rawler",
- "rawvault-common",
 ]
 
 [[package]]

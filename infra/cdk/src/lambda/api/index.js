@@ -1,5 +1,5 @@
 /**
- * RawVault API Lambda
+ * lawt API Lambda
  * 
  * Routes requests to the appropriate handler.
  * This Lambda will be replaced by a Rust Lambda for better performance.

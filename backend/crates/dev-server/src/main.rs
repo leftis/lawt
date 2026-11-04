@@ -1,8 +1,8 @@
 //! Local development server: the real API core over a synthetic photo library.
 //!
-//! Run with `cargo run -p rawvault-dev-server`, then start the frontend with
+//! Run with `cargo run -p lawt-dev-server`, then start the frontend with
 //! `VITE_UI=timeline VITE_API_BASE_URL=http://localhost:3002/api npm run dev`.
-//! Set `RAWVAULT_DEV_PORT` to change the port.
+//! Set `LAWT_DEV_PORT` to change the port.
 //! It never talks to AWS.
 
 // Rust guideline compliant 2026-07-03
@@ -17,8 +17,8 @@ use axum::extract::{Path, State};
 use axum::http::{HeaderValue, StatusCode, header};
 use axum::response::{IntoResponse, Response};
 use axum::routing::get;
-use rawvault_api::{ApiResponse, handle};
-use rawvault_common::Rendition;
+use lawt_api::{ApiResponse, handle};
+use lawt_common::Rendition;
 use tower_http::cors::{Any, CorsLayer};
 
 use crate::fake::FakeLibrary;
@@ -85,7 +85,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .with_state(lib);
 
-    let port = std::env::var("RAWVAULT_DEV_PORT")
+    let port = std::env::var("LAWT_DEV_PORT")
         .ok()
         .and_then(|v| v.parse().ok())
         .unwrap_or(DEFAULT_PORT);

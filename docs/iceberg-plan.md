@@ -1,4 +1,4 @@
-# Apache Iceberg for RawVault — Architecture Plan
+# Apache Iceberg for lawt — Architecture Plan
 
 > **Status**: Draft for review — **superseded in part by [ADR 0001](adr/0001-iceberg-catalog.md)** (cost math, read path, write path and sync gaps corrected there)  
 > **Date**: 2025-07  
@@ -72,7 +72,7 @@ graph TD
     style E fill:#48b,color:#fff
 ```
 
-Key properties relevant to RawVault:
+Key properties relevant to lawt:
 
 - **Schema enforcement** — every image row has typed columns (ISO is an INT, not a string)
 - **Partition pruning** — a query for `gallery='100RICOH'` reads only that partition's Parquet files, not the whole bucket
@@ -96,14 +96,14 @@ graph TB
 
     subgraph "Read Path"
         Browser -->|GET /images?gallery=X&camera=GRIIIx| ListLambda["list-images Lambda\n(new: Athena query)"]
-        ListLambda -->|SELECT ... FROM rawvault.images| Athena
+        ListLambda -->|SELECT ... FROM lawt.images| Athena
         Athena -->|reads only matching partitions| IcebergData
         Athena -->|typed rows| ListLambda
         ListLambda -->|JSON response| Browser
     end
 
     subgraph "Catalog"
-        GlueDB["AWS Glue Data Catalog\nrawvault.images"]
+        GlueDB["AWS Glue Data Catalog\nlawt.images"]
         GlueDB <-->|table metadata| Athena
     end
 
@@ -177,7 +177,7 @@ sequenceDiagram
 
     User->>API: GET /images?gallery=100RICOH&from=2024-01-01
     API->>Lambda: invoke
-    Lambda->>Athena: StartQueryExecution<br/>SELECT ... FROM rawvault.images<br/>WHERE gallery='100RICOH' AND exif_datetime >= '2024-01-01'
+    Lambda->>Athena: StartQueryExecution<br/>SELECT ... FROM lawt.images<br/>WHERE gallery='100RICOH' AND exif_datetime >= '2024-01-01'
     Athena->>Iceberg: read only /gallery=100RICOH/year=2024/ partition
     Iceberg-->>Athena: matching Parquet rows
     Athena-->>Lambda: typed result rows (via S3 output)
@@ -201,7 +201,7 @@ sequenceDiagram
     PreviewGen->>PreviewGen: decode RAW, extract EXIF<br/>generate preview + medium JPEG
     PreviewGen->>S3: PUT R0001234.RAF.preview.png
     PreviewGen->>S3: PUT R0001234.RAF.medium.jpeg
-    PreviewGen->>Athena: MERGE INTO rawvault.images<br/>SET preview_status='done', exif_make='RICOH',<br/>exif_iso=400, exif_datetime='2024-06-15 10:23:00'...
+    PreviewGen->>Athena: MERGE INTO lawt.images<br/>SET preview_status='done', exif_make='RICOH',<br/>exif_iso=400, exif_datetime='2024-06-15 10:23:00'...
     Athena->>Iceberg: write new Parquet row
     Note over Iceberg: snapshot created,<br/>time travel available
 ```
@@ -211,7 +211,7 @@ sequenceDiagram
 ## 5. Iceberg Table Schema
 
 ```sql
-CREATE TABLE rawvault.images (
+CREATE TABLE lawt.images (
 
   -- Identity
   id                STRING     COMMENT 'S3 key — primary identity',
@@ -273,7 +273,7 @@ TBLPROPERTIES (
 
 ```mermaid
 gantt
-    title RawVault Iceberg Implementation
+    title lawt Iceberg Implementation
     dateFormat  YYYY-MM-DD
     section Phase 1 — Foundation
     Glue DB + Iceberg table CDK          :p1a, 2025-07-14, 3d
@@ -300,18 +300,18 @@ gantt
 
 ### Phase 1 — Foundation (CDK changes)
 
-**Files to change**: `infra/cdk/lib/rawvault-stack.js`
+**Files to change**: `infra/cdk/lib/lawt-stack.js`
 
 ```js
 // New: Glue Database
-const glueDb = new glue.CfnDatabase(this, 'RawVaultGlueDb', {
+const glueDb = new glue.CfnDatabase(this, 'lawtGlueDb', {
   catalogId: this.account,
-  databaseInput: { name: 'rawvault' }
+  databaseInput: { name: 'lawt' }
 });
 
 // New: Athena results bucket (required by Athena)
 const athenaResultsBucket = new s3.Bucket(this, 'AthenaResultsBucket', {
-  bucketName: `rawvault-athena-results-${this.account}`,
+  bucketName: `lawt-athena-results-${this.account}`,
   lifecycleRules: [{ expiration: Duration.days(1) }], // auto-clean query results
   blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -319,8 +319,8 @@ const athenaResultsBucket = new s3.Bucket(this, 'AthenaResultsBucket', {
 });
 
 // New: Athena WorkGroup
-const athenaWorkgroup = new athena.CfnWorkGroup(this, 'RawVaultWorkGroup', {
-  name: 'rawvault',
+const athenaWorkgroup = new athena.CfnWorkGroup(this, 'lawtWorkGroup', {
+  name: 'lawt',
   workGroupConfiguration: {
     resultConfiguration: {
       outputLocation: `s3://${athenaResultsBucket.bucketName}/results/`
@@ -346,13 +346,13 @@ Modify `preview-generator-rust/src/main.rs` to add after preview generation:
 ```rust
 // After writing preview files to S3:
 let sql = format!(
-    "INSERT INTO rawvault.images VALUES ('{}', '{}', '{}', '{}', {}, {}, {}, {}, TIMESTAMP '{}', {})",
+    "INSERT INTO lawt.images VALUES ('{}', '{}', '{}', '{}', {}, {}, {}, {}, TIMESTAMP '{}', {})",
     s3_key, gallery, name, extension, size_bytes, is_raw,
     preview_path, "done",
     exif_datetime.format("%Y-%m-%d %H:%M:%S"),
     exif_iso.unwrap_or(0)
 );
-athena_client.start_query_execution(sql, "rawvault").await?;
+athena_client.start_query_execution(sql, "lawt").await?;
 ```
 
 ### Phase 4 — Replace `list-images` Lambda
@@ -366,7 +366,7 @@ const sql = `
     uploaded_at, preview_path, medium_path, preview_status,
     exif_make, exif_model, exif_datetime, exif_iso,
     exif_aperture, exif_shutter, exif_focal_length
-  FROM rawvault.images
+  FROM lawt.images
   WHERE preview_status = 'done'
   ${gallery ? `AND gallery = '${escapeSql(gallery)}'` : ''}
   ${camera  ? `AND exif_model ILIKE '%${escapeSql(camera)}%'` : ''}
@@ -408,7 +408,7 @@ const sql = `
 | **Athena async model** | Medium — Athena is not synchronous; must poll for results | Abstract behind a helper (`waitForQueryResult`) in the Lambda |
 | **Glue + Athena are AWS-specific** | Low — Glue catalog is not portable | Schema and Parquet files are portable; replace Glue with a self-hosted catalog later if needed |
 | **Operational complexity** | Low — two new services (Glue, Athena) to monitor | Both are fully managed; no servers to patch |
-| **Iceberg compaction needed at scale** | Low — small files accumulate over thousands of writes | Run `OPTIMIZE rawvault.images REWRITE DATA` via Athena periodically |
+| **Iceberg compaction needed at scale** | Low — small files accumulate over thousands of writes | Run `OPTIMIZE lawt.images REWRITE DATA` via Athena periodically |
 
 ---
 
@@ -541,8 +541,8 @@ aws glue get-databases --region eu-west-1
 
 # Run a test Athena query
 aws athena start-query-execution \
-  --query-string "SELECT COUNT(*) FROM rawvault.images" \
-  --work-group rawvault \
+  --query-string "SELECT COUNT(*) FROM lawt.images" \
+  --work-group lawt \
   --region eu-west-1
 
 # Get Athena query results
@@ -552,7 +552,7 @@ aws athena get-query-results \
 
 # Check Iceberg table metadata location
 aws glue get-table \
-  --database-name rawvault \
+  --database-name lawt \
   --name images \
   --region eu-west-1 \
   --query 'Table.Parameters.metadata_location'
@@ -562,9 +562,9 @@ aws s3 ls s3://<photo-bucket>/iceberg/images/ --recursive --region eu-west-1
 
 # Time travel query — catalog state 7 days ago
 # (run in Athena console)
-# SELECT * FROM rawvault.images FOR TIMESTAMP AS OF (NOW() - INTERVAL '7' DAY);
+# SELECT * FROM lawt.images FOR TIMESTAMP AS OF (NOW() - INTERVAL '7' DAY);
 ```
 
 ---
 
-*Generated by pi · RawVault project · Review before implementing*
+*Generated by pi · lawt project · Review before implementing*

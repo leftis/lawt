@@ -1,7 +1,7 @@
 # ── Environment & Secrets ──────────────────────────────────
 # Local env files — never commit credentials
 .env
-rawvault.env
+lawt.env
 frontend/.env.production
 .local/
 .env.local

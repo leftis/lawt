@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 const cdk = require('aws-cdk-lib');
-const { RawVaultStack } = require('./lib/rawvault-stack.js');
+const { LawtStack } = require('./lib/lawt-stack.js');
 const { loadConfig } = require('./lib/config.js');
 
 const app = new cdk.App();
 const config = loadConfig();
 
-new RawVaultStack(app, 'RawVaultStack', {
+new LawtStack(app, config.STACK_NAME, {
   env: {
     account: config.AWS_ACCOUNT,
     region: config.AWS_REGION,
   },
   config,
-  description: 'RawVault - High-Performance RAW Image Preview & Delivery System (AWS CDK)',
+  description: 'lawt: RAW photo timeline (AWS CDK)',
 });

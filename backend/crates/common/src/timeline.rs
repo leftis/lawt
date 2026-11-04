@@ -112,7 +112,7 @@ impl MonthKey {
     ///
     /// # Examples
     /// ```
-    /// use rawvault_common::timeline::MonthKey;
+    /// use lawt_common::timeline::MonthKey;
     /// assert_eq!(MonthKey::parse("2024-06").map(|m| m.to_string()), Some("2024-06".to_owned()));
     /// assert!(MonthKey::parse("2024-13").is_none());
     /// assert!(MonthKey::parse("../etc").is_none());
@@ -164,7 +164,7 @@ pub fn build_index(photos: &[Photo]) -> TimelineIndex {
 /// # Examples
 /// ```
 /// use chrono::NaiveDate;
-/// use rawvault_common::{resolve_taken_at, TakenAtSource};
+/// use lawt_common::{resolve_taken_at, TakenAtSource};
 /// let up = NaiveDate::from_ymd_opt(2024, 7, 1).unwrap().and_hms_opt(9, 0, 0).unwrap();
 /// let shot = NaiveDate::from_ymd_opt(2024, 6, 15).unwrap().and_hms_opt(10, 23, 0).unwrap();
 /// assert_eq!(resolve_taken_at(Some(shot), up), (shot, TakenAtSource::Exif));

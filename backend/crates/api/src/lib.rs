@@ -1,4 +1,4 @@
-//! Framework-agnostic core of the RawVault HTTP API.
+//! Framework-agnostic core of the lawt HTTP API.
 //!
 //! The core takes a method and a path and returns a status, headers and a JSON
 //! body. It never touches the network itself: data comes from a [`Library`], so
@@ -9,8 +9,8 @@
 //! | Path | Response |
 //! |---|---|
 //! | `/health` | `{"ok":true}` |
-//! | `/timeline` | [`rawvault_common::TimelineIndex`] |
-//! | `/timeline/months/{YYYY-MM}` | [`rawvault_common::MonthPage`] |
+//! | `/timeline` | [`lawt_common::TimelineIndex`] |
+//! | `/timeline/months/{YYYY-MM}` | [`lawt_common::MonthPage`] |
 //!
 //! Authentication is enforced in front of this code (API Gateway's Cognito
 //! authorizer), so the core assumes an authenticated caller.

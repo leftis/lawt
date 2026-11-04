@@ -18,8 +18,8 @@ mod s3;
 
 use aws_sdk_s3::Client;
 use lambda_runtime::{Error, LambdaEvent, run, service_fn};
-use rawvault_common::IdSalt;
-use rawvault_pipeline::{Options, plan, process, publish};
+use lawt_common::IdSalt;
+use lawt_pipeline::{Options, plan, process, publish};
 use serde::Deserialize;
 use serde_json::{Value, json};
 

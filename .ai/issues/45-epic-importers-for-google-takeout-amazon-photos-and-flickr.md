@@ -1,5 +1,5 @@
 ## Why
-Part of the productization plan in `docs/product/03-access-upload-and-roadmap.md`. Bring existing libraries in, mapping dates and albums.
+Bring existing libraries in, mapping dates and albums.
 
 ## What to do
 Write a spec first (goal, boundaries, data, APIs, rollout, tests), then split into tasks of at most 400 changed lines.
@@ -10,4 +10,3 @@ Write a spec first (goal, boundaries, data, APIs, rollout, tests), then split in
 ## Triage
 Blast radius 2 · Risk 1 · Complexity 2 · Size 2 = 7 → **Spec** track
 
-_Source: docs/product/03_

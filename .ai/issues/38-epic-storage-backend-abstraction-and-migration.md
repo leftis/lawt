@@ -1,13 +1,13 @@
 ## Why
-Part of the productization plan in `docs/product/03-access-upload-and-roadmap.md`. Make the S3-compatible backend a setting, migrate originals to cheaper storage, and measure real cost per GB.
+The code uses the S3 API only. Other stores speak it too (Backblaze B2, Cloudflare R2, MinIO), but the endpoint, credentials and region are not configurable yet.
 
 ## What to do
-Write a spec first (goal, boundaries, data, APIs, rollout, tests), then split into tasks of at most 400 changed lines.
+- Add settings for the storage endpoint and credentials of the photo store and the derived store.
+- Pass them through the pipeline, the API Lambda and the dev server.
+- Test the pipeline against a local MinIO container.
 
 ## Done when
-- Spec approved by the owner and split into tasks, each with a check that passes or fails.
+- The pipeline runs `plan`, `run` and `publish` against MinIO in a test.
 
 ## Triage
-Blast radius 2 · Risk 1 · Complexity 2 · Size 2 = 7 → **Spec** track
-
-_Source: docs/product/03_
+Blast radius 2 · Risk 1 · Complexity 1 · Size 1 = 5 → **Spec** track

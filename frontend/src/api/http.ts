@@ -2,7 +2,7 @@
 
 export const API_BASE: string = import.meta.env.VITE_API_BASE_URL || "http://localhost:3001/api";
 
-const TOKEN_KEY = "rawvault_token";
+const TOKEN_KEY = "lawt_token";
 
 function readToken(): string | null {
   try {

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/logo-wordmark.svg" alt="RawVault" width="420">
+<img src="docs/assets/logo-wordmark.svg" alt="lawt" width="420">
 
 ### Your whole RAW library, by date, on every screen.
 
@@ -19,11 +19,11 @@ Your originals are never touched.
 
 ## Why this exists
 
-Most photo clouds treat RAW files as an afterthought. Google Photos supports few Fujifilm RAF files and
-shows only the embedded JPEG. Amazon Photos stores RAW but cannot preview many formats. Lightroom works
-but locks you into a catalog and a subscription.
+General photo clouds treat RAW files as an afterthought. They support few Fujifilm RAF files, or show
+only the embedded JPEG, or store RAW without a preview. Catalog-based tools work, but they put your
+library inside their own database.
 
-RawVault does one thing: it turns a folder tree of camera files (`100RICOH/R0001234.DNG`,
+lawt does one thing: it turns a folder tree of camera files (`100RICOH/R0001234.DNG`,
 `100_FUJI/DSCF0025.RAF`, ...) into a timeline you can scroll by capture date, and it keeps the
 originals exactly as they are.
 
@@ -39,8 +39,8 @@ originals exactly as they are.
   writes, copies or deletes there, and its IAM role does not allow it either.
 - **Camera data captured once.** Make, model, lens, ISO, aperture, shutter speed, focal length and GPS
   are stored while each photo is processed, so search can be added without reading the originals again.
-- **Cheap.** For a 278 GB library of 7,826 photos, the generated files are 15 GB and the extra cost is
-  under a dollar a month. See [Cost](#cost).
+- **Small footprint.** For a 278 GB library of 7,826 photos, the generated files are 15 GB. See
+  [Resource use](#resource-use).
 
 > **Status:** early, built for one owner and one library. It is not multi-user yet. Expect rough edges
 > and read [Limitations](#limitations) before relying on it.
@@ -84,7 +84,7 @@ You need [Rust](https://rustup.rs) and [Node.js](https://nodejs.org) 20 or newer
 
 ```bash
 cd backend
-cargo run -p rawvault-dev-server
+cargo run -p lawt-dev-server
 ```
 
 In a second terminal:
@@ -106,8 +106,8 @@ everything else. Plan for about an hour the first time.
 
 | Need | Notes |
 |---|---|
-| AWS account and CLI credentials | Region of your choice. Pin it in `rawvault.env`. |
-| An S3 bucket with your photos | Keys must look like `all images/<folder>/<file>`. RawVault only reads it. |
+| AWS account and CLI credentials | Region of your choice. Pin it in `lawt.env`. |
+| An S3 bucket with your photos | Keys must look like `all images/<folder>/<file>`. lawt only reads it. |
 | A Cognito user pool | With a hosted UI domain, one user (you), and an app client that has a **client secret**, the **authorization code grant** and scopes `openid email profile`. |
 | Node.js 20+ | |
 | Rust (stable) and [cargo-lambda](https://www.cargo-lambda.info) | To build the Lambdas for arm64. |
@@ -116,11 +116,11 @@ everything else. Plan for about an hour the first time.
 ### 1. Configure
 
 ```bash
-cp rawvault.env.example rawvault.env
+cp lawt.env.example lawt.env
 cp frontend/.env.production.example frontend/.env.production
 ```
 
-Edit `rawvault.env` (account, region, photo bucket, Cognito ids and domain). Every setting is
+Edit `lawt.env` (account, region, photo bucket, Cognito ids and domain). Every setting is
 described in the file. Both files are git-ignored.
 
 ### 2. Bootstrap CDK once
@@ -146,7 +146,7 @@ indexing function. **Pass this flag on every later deploy too**: deploying witho
 Read the stack outputs:
 
 ```bash
-aws cloudformation describe-stacks --stack-name RawVaultStack --region <region> \
+aws cloudformation describe-stacks --stack-name LawtStack --region <region> \
   --query "Stacks[0].Outputs[].[OutputKey,OutputValue]" --output table
 ```
 
@@ -168,7 +168,7 @@ The pipeline never runs by itself. You start it, and you can start small. Replac
 Count what is there (lists keys only, downloads nothing):
 
 ```bash
-aws lambda invoke --function-name rawvault-pipeline --region <region> \
+aws lambda invoke --function-name lawt-pipeline --region <region> \
   --cli-binary-format raw-in-base64-out --cli-read-timeout 900 \
   --payload '{"action":"plan"}' /dev/stdout
 ```
@@ -176,7 +176,7 @@ aws lambda invoke --function-name rawvault-pipeline --region <region> \
 Render five photos from one folder and look at the result:
 
 ```bash
-aws lambda invoke --function-name rawvault-pipeline --region <region> \
+aws lambda invoke --function-name lawt-pipeline --region <region> \
   --cli-binary-format raw-in-base64-out --cli-read-timeout 900 \
   --payload '{"action":"run","folder":"100RICOH","limit":5}' /dev/stdout
 ```
@@ -190,14 +190,14 @@ Rough speed: about 8,000 photos took 22 minutes with six parallel workers.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `cdk synth` says `Missing settings` | `rawvault.env` is missing or incomplete | Copy `rawvault.env.example` and fill every line |
+| `cdk synth` says `Missing settings` | `lawt.env` is missing or incomplete | Copy `lawt.env.example` and fill every line |
 | `cdk synth` cannot find `target/lambda/...` | The Lambdas are not built | `make build-rust` (needs `cargo-lambda` and `zig`) |
 | `cargo lambda build` says Zig is not installed | The cross-compile linker is missing | `brew install zig` or `pip install ziglang` |
 | Every API call returns 401 | No login token, or the Cognito app client is not set up for the code grant | Check callback URL, grant type and scopes. Log out and back in. |
 | After login you land on the Cognito error page | `FrontendURL/` is not an allowed callback URL | Add it, with the trailing slash, on the app client |
 | The browser shows CORS errors on a 401 | Stale frontend bundle pointing at an old API | Rebuild the frontend after any `.env.production` change and redeploy |
 | The timeline says "Your timeline is empty" | The pipeline has not run yet | Run `plan`, then `run`, see step 5 |
-| `rawvault-pipeline` function disappeared | A deploy without `-c enablePipeline=true` | Deploy again with the flag |
+| `lawt-pipeline` function disappeared | A deploy without `-c enablePipeline=true` | Deploy again with the flag |
 | Thumbnails are grey tiles with `RAF` text | The photo has no readable embedded preview, or its status is `failed` | Open the record in `records/<id>.json` in the derived bucket and read `reason` |
 | A dev build talks to production | A leftover `frontend/.env.local` | Delete it. `make build-frontend` creates it. |
 
@@ -213,7 +213,7 @@ have a record. Add `"force": true` to the payload to re-render them, for example
 
 ## Configuration
 
-**`rawvault.env`** (deployment, read by CDK and the Makefile)
+**`lawt.env`** (deployment, read by CDK and the Makefile)
 
 | Name | Meaning |
 |---|---|
@@ -223,6 +223,8 @@ have a record. Add `"force": true` to the payload to re-render them, for example
 | `COGNITO_USER_POOL_ID` | Existing user pool |
 | `COGNITO_USER_POOL_CLIENT_ID` | App client of that pool |
 | `COGNITO_DOMAIN` | Hosted UI host of that pool |
+| `APP_NAME` (optional) | Prefix of function names. Default `lawt`. |
+| `STACK_NAME` (optional) | CloudFormation stack name. Default `LawtStack`. |
 
 **`frontend/.env.production`** (baked into the bundle at build time): see
 [`frontend/.env.production.example`](frontend/.env.production.example).
@@ -239,20 +241,19 @@ have a record. Add `"force": true` to the payload to re-render them, for example
 Tested on real files: Fujifilm RAF, Ricoh GR DNG and JPEG. Other brands depend on `rawler` and are
 untested here. If a RAW has no embedded preview it is listed with a placeholder tile.
 
-## Cost
+## Resource use
 
-Measured on the author's library, with AWS list prices (check them for your region):
+Measured on the author's library:
 
 | | |
 |---|---|
 | Photos | 7,826 (RAF 6,181, DNG 1,110, JPG 506, TIFF 28) |
 | Originals | 277.8 GB, average 35.5 MB per photo |
 | Generated files | 15.1 GB, 5.4 % of the originals |
-| Extra monthly cost | about $0.80 (storage of the generated files plus a $0.40 secret) |
-| One-off processing | about $0.50 |
+| First full run | about 22 minutes with six parallel workers |
 
-You still pay for storing your originals wherever they live. Downloads through CloudFront cost
-about $0.085 per GB after the free tier. More detail in [docs/COSTS.md](docs/COSTS.md).
+You pay AWS for the generated files, requests, CDN traffic and one secret, on top of wherever your
+originals are stored. Use the [AWS calculator](https://calculator.aws/) with these numbers for your own estimate.
 
 ## Project layout
 
@@ -265,7 +266,7 @@ about $0.085 per GB after the free tier. More detail in [docs/COSTS.md](docs/COS
 | `backend/crates/dev-server` | Local server with a synthetic library |
 | `frontend/src/timeline` | The timeline UI |
 | `infra/cdk` | The CDK stack |
-| `docs/` | Architecture, runbook, decision record, cost model, product plan |
+| `docs/` | Architecture, runbook, decision record |
 
 TypeScript types for the API are generated from the Rust structs (`cargo test --all-features` in
 `backend/` rewrites `frontend/src/api/generated/`).
@@ -280,7 +281,7 @@ cd infra/cdk && npx cdk synth
 
 ## Limitations
 
-- Single owner. There is no multi-user isolation, billing or upload flow. Photos get into the bucket
+- Single owner. There is no multi-user support or upload flow. Photos get into the bucket
   with tools you already use, such as `rclone`.
 - Thumbnails are served from unguessable, salted URLs. Anyone who has a URL can view that one image.
   Signed cookies would make them strictly private and are on the roadmap.
@@ -292,7 +293,7 @@ cd infra/cdk && npx cdk synth
 ## Roadmap
 
 Expiring share links, a bin with 30-day restore, search by camera and lens, multi-select, and a
-desktop uploader. The plan is in [TODO.md](TODO.md) and [docs/product](docs/product/README.md).
+desktop uploader. See [TODO.md](TODO.md) and the open issues.
 
 ## License
 

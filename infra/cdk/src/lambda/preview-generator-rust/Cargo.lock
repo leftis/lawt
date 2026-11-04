@@ -2890,7 +2890,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rawvault-preview-generator"
+name = "lawt-preview-generator"
 version = "0.1.0"
 dependencies = [
  "aws-config",

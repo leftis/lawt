@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { getTimelineIndex, type Photo, type TimelineIndex } from "../api";
 import "./timeline.css";
+import { Logo } from "../components/Logo";
 import { DaySection } from "./DaySection";
 import { groupByDay, isFiltering, matches, NO_FILTERS, type Filters } from "./filters";
 import { monthLabel, monthOfDay } from "./format";
@@ -242,7 +243,7 @@ export default function TimelineView({ onLogout }: Props) {
     <div className="tl-root">
       <header className="tl-header">
         <span className="tl-logo">
-          <span className="logo-icon">RV</span> RawVault
+          <Logo size={28} /> lawt
         </span>
         <div className="tl-controls">
           <select

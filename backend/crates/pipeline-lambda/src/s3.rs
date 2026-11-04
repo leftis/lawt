@@ -11,8 +11,8 @@ use aws_sdk_s3::operation::get_object::GetObjectError;
 use aws_sdk_s3::primitives::ByteStream;
 use aws_sdk_s3::types::{Delete, ObjectIdentifier};
 use chrono::DateTime;
-use rawvault_common::OriginalKey;
-use rawvault_pipeline::{Derived, ObjectInfo, Originals, PortError};
+use lawt_common::OriginalKey;
+use lawt_pipeline::{Derived, ObjectInfo, Originals, PortError};
 
 /// S3 allows at most this many keys per `DeleteObjects` call.
 const DELETE_BATCH: usize = 1000;

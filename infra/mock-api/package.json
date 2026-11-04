@@ -1,7 +1,7 @@
 {
-  "name": "rawvault-mock-api",
+  "name": "lawt-mock-api",
   "version": "1.0.0",
-  "description": "Mock backend for RawVault local development",
+  "description": "Mock backend for lawt local development",
   "type": "module",
   "main": "index.js",
   "scripts": {

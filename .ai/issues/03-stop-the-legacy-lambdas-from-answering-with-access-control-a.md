@@ -1,5 +1,5 @@
 ## Why
-The Node Lambdas echo the request `Origin` or fall back to `*`, and error paths always send `*`, together with `Access-Control-Allow-Credentials: true`. API Gateway now blocks unauthenticated calls, which lowers the risk, but the pattern is wrong. `rawvault-api` already does it right with `allowed_origin`.
+The Node Lambdas echo the request `Origin` or fall back to `*`, and error paths always send `*`, together with `Access-Control-Allow-Credentials: true`. API Gateway now blocks unauthenticated calls, which lowers the risk, but the pattern is wrong. `lawt-api` already does it right with `allowed_origin`.
 
 ## What to do
 - Best: remove the Lambdas (Node removal issue).

@@ -4,8 +4,8 @@
 
 use std::collections::{BTreeSet, HashMap};
 
-use rawvault_common::key::{ROOT_PREFIX, is_legacy_derivative};
-use rawvault_common::{Asset, IdSalt, OriginalKey, group_assets};
+use lawt_common::key::{ROOT_PREFIX, is_legacy_derivative};
+use lawt_common::{Asset, IdSalt, OriginalKey, group_assets};
 
 use crate::ports::{Derived, ObjectInfo, Originals, PortError};
 use crate::record::{RECORD_PREFIX, record_key};

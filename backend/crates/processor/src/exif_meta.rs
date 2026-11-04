@@ -6,8 +6,8 @@ use std::io::Cursor;
 
 use chrono::NaiveDateTime;
 use exif::{In, Reader, Tag};
-use rawvault_common::CameraExif;
-use rawvault_common::camera::{gps_decimal, shutter_string};
+use lawt_common::CameraExif;
+use lawt_common::camera::{gps_decimal, shutter_string};
 
 /// EXIF facts about a photo.
 #[derive(Clone, Debug, Default, PartialEq)]

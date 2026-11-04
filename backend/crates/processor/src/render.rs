@@ -8,8 +8,8 @@ use chrono::NaiveDateTime;
 use image::codecs::jpeg::JpegEncoder;
 use image::imageops::FilterType;
 use image::{DynamicImage, ExtendedColorType, RgbImage};
-use rawvault_common::rendition::{MEDIUM_EDGE, THUMBNAIL_EDGE};
-use rawvault_common::{CameraExif, FileKind};
+use lawt_common::rendition::{MEDIUM_EDGE, THUMBNAIL_EDGE};
+use lawt_common::{CameraExif, FileKind};
 
 use crate::error::ProcessError;
 use crate::exif_meta;
@@ -190,7 +190,7 @@ fn decode_raw(
 /// Maps rawler's metadata to [`CameraExif`].
 #[cfg(feature = "raw")]
 fn camera_from_rawler(m: &rawler::decoders::RawMetadata) -> CameraExif {
-    use rawvault_common::camera::{gps_decimal, shutter_string};
+    use lawt_common::camera::{gps_decimal, shutter_string};
 
     let ratio =
         |r: &rawler::formats::tiff::Rational| (r.d != 0).then(|| f64::from(r.n) / f64::from(r.d));

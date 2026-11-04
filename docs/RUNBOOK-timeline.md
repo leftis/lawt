@@ -9,7 +9,7 @@ State on 2026-09-25: everything below is **deployed except the pipeline function
 |---|---|
 | Frontend (legacy gallery by default; timeline with `?ui=timeline`) | https://<frontend-domain> |
 | API (all routes now require a Cognito ID token) | https://<api-id>.execute-api.eu-west-1.amazonaws.com/prod/ |
-| Timeline API (Rust Lambda `rawvault-api`) | `/timeline`, `/timeline/months/{YYYY-MM}` |
+| Timeline API (Rust Lambda `lawt-api`) | `/timeline`, `/timeline/months/{YYYY-MM}` |
 | Derived bucket (renditions, records, timeline files) | `<derived-bucket>` |
 | Rendition CDN (only `/derived/*`) | https://<rendition-cdn-domain> |
 
@@ -18,14 +18,14 @@ First login after this deploy: your old session token no longer works (the API n
 ## 1. Create the pipeline function (read-only access to the photo bucket)
 Needs the Rust cross-build, which uses Zig as the linker (`brew install zig`, or `pip3 install ziglang`).
 ```bash
-cd backend && cargo lambda build --release --arm64 -p rawvault-pipeline-lambda
+cd backend && cargo lambda build --release --arm64 -p lawt-pipeline-lambda
 cd ../infra/cdk && npx cdk deploy -c enablePipeline=true --require-approval never --region eu-west-1
 ```
 The function's role may only `ListBucket` (prefix `all images/`) and `GetObject` (`all images/*`) on the photo bucket. It cannot write or delete there. Review with `npx cdk diff -c enablePipeline=true` first if you like.
 
 ## 2. Plan (lists keys only, downloads no photo)
 ```bash
-aws lambda invoke --function-name rawvault-pipeline --region eu-west-1 \
+aws lambda invoke --function-name lawt-pipeline --region eu-west-1 \
   --cli-binary-format raw-in-base64-out \
   --payload '{"action":"plan"}' /dev/stdout
 ```
@@ -33,7 +33,7 @@ Check `photos_in_scope` matches what you expect (~10k), `unsupported_files` and 
 
 ## 3. Try one small folder first
 ```bash
-aws lambda invoke --function-name rawvault-pipeline --region eu-west-1 \
+aws lambda invoke --function-name lawt-pipeline --region eu-west-1 \
   --cli-binary-format raw-in-base64-out --cli-read-timeout 900 \
   --payload '{"action":"run","folder":"100RICOH","limit":5}' /dev/stdout
 ```

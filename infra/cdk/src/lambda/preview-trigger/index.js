@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     // The Rust Lambda can take 30-60s; synchronous call would time out the trigger.
     await lambdaClient.send(
       new InvokeCommand({
-        FunctionName: 'rawvault-preview-generator',
+        FunctionName: process.env.PREVIEW_FUNCTION,
         InvocationType: 'Event',          // async — returns 202 immediately
         Payload: JSON.stringify(invokePayload),
       })

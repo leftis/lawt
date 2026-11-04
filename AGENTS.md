@@ -3,7 +3,7 @@
 Short context for tools like Claude Code, Cursor or Copilot. Humans: start with [README.md](README.md).
 
 ## What this repo is
-RawVault turns a bucket of camera photos (RAW, TIFF, JPEG) into a fast timeline web app on AWS.
+lawt turns a bucket of camera photos (RAW, TIFF, JPEG) into a fast timeline web app on AWS.
 Backend is Rust, frontend is React + TypeScript, infrastructure is AWS CDK. Read
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) before changing anything.
 
@@ -11,9 +11,9 @@ Backend is Rust, frontend is React + TypeScript, infrastructure is AWS CDK. Read
 1. **The photo bucket holds irreplaceable originals. Never write, copy or delete there.** Code reads it
    through the `Originals` trait (`backend/crates/pipeline`), which has no write method on purpose.
    Anything generated goes to the separate derived bucket.
-2. **No secrets in the repo.** Settings live in `rawvault.env` and `frontend/.env.production`, both
+2. **No secrets in the repo.** Settings live in `lawt.env` and `frontend/.env.production`, both
    git-ignored. Only the `*.example` files are committed.
-3. **Pin the region and profile** on every AWS command. Deploy settings come from `rawvault.env`.
+3. **Pin the region and profile** on every AWS command. Deploy settings come from `lawt.env`.
 4. **Backend code is Rust, frontend code is TypeScript.** Do not add new Node or Python services.
 5. **CDK:** attach the Cognito authorizer in the *method options* (`addMethod(..., options)`), not in
    `LambdaIntegration`. In the integration it is silently ignored and the route stays open.

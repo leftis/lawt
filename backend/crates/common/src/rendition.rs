@@ -61,12 +61,12 @@ impl Rendition {
     ///
     /// # Examples
     /// ```
-    /// use rawvault_common::{IdSalt, OriginalKey, Rendition, group_assets};
+    /// use lawt_common::{IdSalt, OriginalKey, Rendition, group_assets};
     /// let key = OriginalKey::parse("all images/100RICOH/R0001.RAF")?;
     /// let asset = group_assets([key], &IdSalt::insecure_dev()).assets.remove(0);
     /// let k = Rendition::Thumbnail.derived_key(&asset.id);
     /// assert!(k.starts_with("derived/") && k.ends_with("/thumbnail.jpeg"));
-    /// # Ok::<(), rawvault_common::KeyError>(())
+    /// # Ok::<(), lawt_common::KeyError>(())
     /// ```
     #[must_use]
     pub fn derived_key(self, id: &AssetId) -> String {
