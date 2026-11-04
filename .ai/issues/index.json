@@ -305,38 +305,10 @@
     ]
   },
   {
-    "file": "35-validate-demand-before-building-the-product.md",
-    "title": "Validate demand before building the product",
-    "labels": [
-      "product",
-      "decision",
-      "P1"
-    ]
-  },
-  {
-    "file": "36-decide-the-product-basics.md",
-    "title": "Decide the product basics",
-    "labels": [
-      "product",
-      "decision",
-      "P1"
-    ]
-  },
-  {
-    "file": "37-epic-multi-tenancy-foundation.md",
-    "title": "Epic: multi-tenancy foundation",
-    "labels": [
-      "epic",
-      "product",
-      "P3"
-    ]
-  },
-  {
     "file": "38-epic-storage-backend-abstraction-and-migration.md",
-    "title": "Epic: storage backend abstraction and migration",
+    "title": "Make the storage backend a setting (any S3-compatible store)",
     "labels": [
       "epic",
-      "product",
       "P3"
     ]
   },
@@ -345,7 +317,6 @@
     "title": "Epic: web uploader",
     "labels": [
       "epic",
-      "product",
       "P3"
     ]
   },
@@ -354,7 +325,6 @@
     "title": "Epic: desktop uploader (Tauri, Rust core, React + TypeScript UI)",
     "labels": [
       "epic",
-      "product",
       "P3"
     ]
   },
@@ -363,34 +333,6 @@
     "title": "Epic: event-driven processing with a queue and dead-letter queue",
     "labels": [
       "epic",
-      "product",
-      "P3"
-    ]
-  },
-  {
-    "file": "42-epic-billing-plans-quotas-metering-and-vat.md",
-    "title": "Epic: billing, plans, quotas, metering and VAT",
-    "labels": [
-      "epic",
-      "product",
-      "P3"
-    ]
-  },
-  {
-    "file": "43-epic-account-export-deletion-and-retention.md",
-    "title": "Epic: account export, deletion and retention",
-    "labels": [
-      "epic",
-      "product",
-      "P3"
-    ]
-  },
-  {
-    "file": "44-epic-abuse-handling-and-legal-basics.md",
-    "title": "Epic: abuse handling and legal basics",
-    "labels": [
-      "epic",
-      "product",
       "P3"
     ]
   },
@@ -399,7 +341,6 @@
     "title": "Epic: importers for Google Takeout, Amazon Photos and Flickr",
     "labels": [
       "epic",
-      "product",
       "P3"
     ]
   },
@@ -407,18 +348,8 @@
     "file": "46-epic-pwa-and-mobile.md",
     "title": "Epic: PWA and mobile",
     "labels": [
-      "epic",
-      "product",
-      "P3"
-    ]
-  },
-  {
-    "file": "47-epic-marketing-site-docs-and-support-tooling.md",
-    "title": "Epic: marketing site, docs and support tooling",
-    "labels": [
-      "epic",
-      "product",
-      "P3"
+      "P3",
+      "feature"
     ]
   }
 ]

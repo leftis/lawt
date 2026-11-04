@@ -39,8 +39,8 @@ originals exactly as they are.
   writes, copies or deletes there, and its IAM role does not allow it either.
 - **Camera data captured once.** Make, model, lens, ISO, aperture, shutter speed, focal length and GPS
   are stored while each photo is processed, so search can be added without reading the originals again.
-- **Cheap.** For a 278 GB library of 7,826 photos, the generated files are 15 GB and the extra cost is
-  under a dollar a month. See [Cost](#cost).
+- **Small footprint.** For a 278 GB library of 7,826 photos, the generated files are 15 GB. See
+  [Resource use](#resource-use).
 
 > **Status:** early, built for one owner and one library. It is not multi-user yet. Expect rough edges
 > and read [Limitations](#limitations) before relying on it.
@@ -239,20 +239,20 @@ have a record. Add `"force": true` to the payload to re-render them, for example
 Tested on real files: Fujifilm RAF, Ricoh GR DNG and JPEG. Other brands depend on `rawler` and are
 untested here. If a RAW has no embedded preview it is listed with a placeholder tile.
 
-## Cost
+## Resource use
 
-Measured on the author's library, with AWS list prices (check them for your region):
+Measured on the author's library:
 
 | | |
 |---|---|
 | Photos | 7,826 (RAF 6,181, DNG 1,110, JPG 506, TIFF 28) |
 | Originals | 277.8 GB, average 35.5 MB per photo |
 | Generated files | 15.1 GB, 5.4 % of the originals |
-| Extra monthly cost | about $0.80 (storage of the generated files plus a $0.40 secret) |
-| One-off processing | about $0.50 |
+| First full run | about 22 minutes with six parallel workers |
 
-You still pay for storing your originals wherever they live. Downloads through CloudFront cost
-about $0.085 per GB after the free tier. More detail in [docs/COSTS.md](docs/COSTS.md).
+You pay AWS for the generated files, requests, CDN traffic and one secret, on top of wherever your
+originals are stored. Use the [AWS pricing calculator](https://calculator.aws/) with these numbers
+for your own estimate.
 
 ## Project layout
 
@@ -265,7 +265,7 @@ about $0.085 per GB after the free tier. More detail in [docs/COSTS.md](docs/COS
 | `backend/crates/dev-server` | Local server with a synthetic library |
 | `frontend/src/timeline` | The timeline UI |
 | `infra/cdk` | The CDK stack |
-| `docs/` | Architecture, runbook, decision record, cost model, product plan |
+| `docs/` | Architecture, runbook, decision record |
 
 TypeScript types for the API are generated from the Rust structs (`cargo test --all-features` in
 `backend/` rewrites `frontend/src/api/generated/`).
@@ -280,7 +280,7 @@ cd infra/cdk && npx cdk synth
 
 ## Limitations
 
-- Single owner. There is no multi-user isolation, billing or upload flow. Photos get into the bucket
+- Single owner. There is no multi-user support or upload flow. Photos get into the bucket
   with tools you already use, such as `rclone`.
 - Thumbnails are served from unguessable, salted URLs. Anyone who has a URL can view that one image.
   Signed cookies would make them strictly private and are on the roadmap.
@@ -292,7 +292,7 @@ cd infra/cdk && npx cdk synth
 ## Roadmap
 
 Expiring share links, a bin with 30-day restore, search by camera and lens, multi-select, and a
-desktop uploader. The plan is in [TODO.md](TODO.md) and [docs/product](docs/product/README.md).
+desktop uploader. See [TODO.md](TODO.md) and the open issues.
 
 ## License
 

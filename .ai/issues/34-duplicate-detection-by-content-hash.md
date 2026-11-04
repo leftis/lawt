@@ -11,4 +11,3 @@ The same photo can exist under several folders after card imports and rclone syn
 ## Triage
 Blast radius 1 · Risk 0 · Complexity 1 · Size 1 = 3 → **Planned** track
 
-_Source: docs/product/02_
