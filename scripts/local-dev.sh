@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ──────────────────────────────────────────────
-# RawVault — Local Development Setup
+# lawt — Local Development Setup
 # ──────────────────────────────────────────────
 # Usage:
 #   ./scripts/local-dev.sh init      # Setup local services
@@ -42,7 +42,7 @@ check_docker() {
 # ── Commands ───────────────────────────────────
 
 cmd_init() {
-  info "Initializing RawVault local development..."
+  info "Initializing lawt local development..."
   check_docker
 
   # Create .env if it doesn't exist
@@ -87,7 +87,7 @@ cmd_init() {
 }
 
 cmd_start() {
-  info "Starting RawVault local development stack..."
+  info "Starting lawt local development stack..."
   check_docker
 
   cd "$PROJECT_DIR"
@@ -123,14 +123,14 @@ cmd_start() {
 }
 
 cmd_stop() {
-  info "Stopping RawVault local development stack..."
+  info "Stopping lawt local development stack..."
   cd "$PROJECT_DIR"
   docker compose down 2>/dev/null || true
   ok "All services stopped"
 }
 
 cmd_status() {
-  info "RawVault local development status:"
+  info "lawt local development status:"
   echo ""
   cd "$PROJECT_DIR"
   docker compose ps
@@ -158,7 +158,7 @@ case "${1:-help}" in
   status)  cmd_status ;;
   clean)   cmd_clean ;;
   *)
-    echo "RawVault Local Development Manager"
+    echo "lawt Local Development Manager"
     echo ""
     echo "Usage: $0 {init|start|stop|status|clean}"
     echo ""

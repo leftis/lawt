@@ -8,7 +8,7 @@ use std::sync::Mutex;
 
 use chrono::{NaiveDate, NaiveDateTime};
 use image::{DynamicImage, ImageFormat, Rgb, RgbImage};
-use rawvault_common::OriginalKey;
+use lawt_common::OriginalKey;
 
 use crate::ports::{Derived, ObjectInfo, Originals, PortError};
 

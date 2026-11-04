@@ -1,4 +1,4 @@
-//! File formats `RawVault` understands and how they rank as a photo's original.
+//! File formats `lawt` understands and how they rank as a photo's original.
 
 // Rust guideline compliant 2026-07-03
 
@@ -38,7 +38,7 @@ impl FileKind {
     ///
     /// # Examples
     /// ```
-    /// use rawvault_common::FileKind;
+    /// use lawt_common::FileKind;
     /// assert_eq!(FileKind::from_extension("RAF"), Some(FileKind::Raw));
     /// assert_eq!(FileKind::from_extension(".jpeg"), Some(FileKind::Jpeg));
     /// assert_eq!(FileKind::from_extension("txt"), None);

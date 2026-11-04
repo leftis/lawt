@@ -57,7 +57,7 @@ impl CameraExif {
 ///
 /// # Examples
 /// ```
-/// use rawvault_common::camera::shutter_string;
+/// use lawt_common::camera::shutter_string;
 /// assert_eq!(shutter_string(1, 250).as_deref(), Some("1/250"));
 /// assert_eq!(shutter_string(10, 2500).as_deref(), Some("1/250"));
 /// assert_eq!(shutter_string(2, 1).as_deref(), Some("2"));
@@ -87,7 +87,7 @@ pub fn shutter_string(num: u32, den: u32) -> Option<String> {
 ///
 /// # Examples
 /// ```
-/// use rawvault_common::camera::gps_decimal;
+/// use lawt_common::camera::gps_decimal;
 /// let lat = gps_decimal(37.0, 58.0, 30.0, "N").unwrap();
 /// assert!((lat - 37.975).abs() < 1e-9);
 /// assert!(gps_decimal(23.0, 43.0, 0.0, "W").unwrap() < 0.0);

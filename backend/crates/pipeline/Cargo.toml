@@ -1,5 +1,5 @@
 [package]
-name = "rawvault-pipeline"
+name = "lawt-pipeline"
 description = "Indexing pipeline: plan new photos, render them into the derived bucket, publish the timeline."
 version.workspace = true
 edition.workspace = true
@@ -7,8 +7,8 @@ license.workspace = true
 publish.workspace = true
 
 [dependencies]
-rawvault-common = { path = "../common" }
-rawvault-processor = { path = "../processor" }
+lawt-common = { path = "../common" }
+lawt-processor = { path = "../processor" }
 chrono = { workspace = true }
 futures = "0.3"
 serde = { workspace = true }

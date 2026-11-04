@@ -1,16 +1,16 @@
-# RawVault
+# lawt
 
-Personal photo gallery (RAW + JPEG/TIFF) on AWS. A fun side project, but built to production standards: fast, cheap to run, and safe. Single owner. Photos already live in an S3 bucket (`PHOTO_BUCKET` in `rawvault.env`), synced with rclone, keys under `all images/<folder>/<file>`.
+Personal photo gallery (RAW + JPEG/TIFF) on AWS. A fun side project, but built to production standards: fast, cheap to run, and safe. Single owner. Photos already live in an S3 bucket (`PHOTO_BUCKET` in `lawt.env`), synced with rclone, keys under `all images/<folder>/<file>`.
 
 @AGENTS.md
 
-> AGENTS.md holds the short agent rules; the AWS values for this deployment are in `rawvault.env` and `.local/LIVE.md`.
+> AGENTS.md holds the short agent rules; the AWS values for this deployment are in `lawt.env` and `.local/LIVE.md`.
 
 ## Read first
 - `docs/ARCHITECTURE.md` — how it works today, data flow, S3 key conventions, known weaknesses
 - `TODO.md` — prioritized backlog. Pick work from here, update it as you go (tick items, add discoveries)
 - `docs/iceberg-plan.md` — **draft, not decided**. Do not start building it without the owner's go-ahead
-- `.claude/skills/` — stack skills (`rawvault-frontend`, `rawvault-aws-cdk`, `rawvault-preview-pipeline`, `rawvault-engineering`). Load the relevant one before working in that area
+- `.claude/skills/` — stack skills (`lawt-frontend`, `lawt-aws-cdk`, `lawt-preview-pipeline`, `lawt-engineering`). Load the relevant one before working in that area
 
 ## Language policy (owner decision, 2026-09-25)
 - **Backend = Rust, always.** New Lambdas/services are Rust (cargo-lambda, arm64). Existing Node Lambdas are legacy and get ported, not extended (bug fixes only).
@@ -23,25 +23,25 @@ Personal photo gallery (RAW + JPEG/TIFF) on AWS. A fun side project, but built t
 |---|---|---|
 | Frontend | React 19 + Vite 6 (JSX today → **TypeScript strict**, no router, no tests), plain CSS | `frontend/` |
 | API | API Gateway REST + Cognito authorizer; **target: one Rust API Lambda**; legacy: Node 20 Lambdas (CommonJS, SDK v3) | `infra/cdk/src/lambda/*` |
-| Rust workspace (new) | `backend/`: crate `rawvault-common` (formats, keys, asset grouping, renditions, timeline model; pure, no AWS). Lambdas join here as they are ported | `backend/` |
+| Rust workspace (new) | `backend/`: crate `lawt-common` (formats, keys, asset grouping, renditions, timeline model; pure, no AWS). Lambdas join here as they are ported | `backend/` |
 | Preview generator | Rust Lambda (arm64, `provided.al2023`), `rawler` + `image` | `infra/cdk/src/lambda/preview-generator-rust` |
-| Infra | AWS CDK v2 (JS), single stack `RawVaultStack`, eu-west-1 | `infra/cdk/lib/rawvault-stack.js` |
+| Infra | AWS CDK v2 (JS), single stack `LawtStack`, eu-west-1 | `infra/cdk/lib/lawt-stack.js` |
 | Local dev | Express mock API (+ optional LocalStack) | `infra/mock-api`, `docker-compose.yml`, `scripts/local-dev.sh` |
 
 ## Commands
 ```bash
 make help                 # all deploy targets (preflight, build-rust, build-frontend, synth, deploy, validate)
 cd backend && cargo test --all-features && cargo clippy --all-targets --all-features -- -D warnings   # Rust workspace (regenerates TS types)
-cd backend && cargo run -p rawvault-dev-server            # synthetic library on :3002 (no AWS)
+cd backend && cargo run -p lawt-dev-server            # synthetic library on :3002 (no AWS)
 cd frontend && npm test && npm run typecheck                    # vitest + tsc
 cd frontend && VITE_UI=timeline VITE_API_BASE_URL=http://localhost:3002/api npm run dev
-cd backend && cargo lambda build --release --arm64 -p rawvault-api-lambda   # needs zig (linker only): brew install zig
+cd backend && cargo lambda build --release --arm64 -p lawt-api-lambda   # needs zig (linker only): brew install zig
 cd frontend && npm run dev            # Vite on :5173, proxies /api -> mock on :3001
 cd infra/mock-api && node index.js    # local mock backend
 cd infra/cdk && npx cdk synth --region eu-west-1
 cd infra/cdk/src/lambda/preview-generator-rust && cargo lambda build --release --arm64
 ```
-Deploy = `make deploy` (settings from `rawvault.env`). **Never deploy or change live AWS without the owner asking.**
+Deploy = `make deploy` (settings from `lawt.env`). **Never deploy or change live AWS without the owner asking.**
 
 ## Working rules
 0. **Never touch the photo bucket (`PHOTO_BUCKET`)**: no reads, listings, writes or deletes from the CLI/SDK unless the owner explicitly approves that specific action in the current session. Code that will run against it is written and unit-tested locally with fakes; the owner runs or approves any real run. Private live values are in `.local/LIVE.md` (git-ignored).

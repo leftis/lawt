@@ -3,10 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 
-// One settings file for the whole project: <repo>/rawvault.env (git-ignored).
+// One settings file for the whole project: <repo>/lawt.env (git-ignored).
 // Read literally, like `docker run --env-file`: KEY=value per line, no quote removal,
 // no `$` expansion, `#` comments and blank lines skipped. Real environment variables win.
-const ENV_FILE = path.resolve(__dirname, '../../../rawvault.env');
+const ENV_FILE = path.resolve(__dirname, '../../../lawt.env');
 
 const REQUIRED = {
   AWS_ACCOUNT: 'AWS account id that owns the stack',
@@ -15,6 +15,11 @@ const REQUIRED = {
   COGNITO_USER_POOL_ID: 'Existing Cognito user pool id, for example eu-west-1_AbCdEfGhI',
   COGNITO_USER_POOL_CLIENT_ID: 'App client id of that pool (needs a client secret and the code grant)',
   COGNITO_DOMAIN: 'Hosted UI host, for example my-prefix.auth.eu-west-1.amazoncognito.com',
+};
+
+const OPTIONAL = {
+  APP_NAME: 'lawt', // prefix of function names and other physical names
+  STACK_NAME: 'LawtStack', // CloudFormation stack name
 };
 
 function readEnvFile(file) {
@@ -40,9 +45,10 @@ function loadConfig() {
   }
   if (missing.length > 0) {
     throw new Error(
-      `Missing settings. Copy rawvault.env.example to rawvault.env and fill in:\n${missing.join('\n')}`,
+      `Missing settings. Copy lawt.env.example to lawt.env and fill in:\n${missing.join('\n')}`,
     );
   }
+  for (const [key, fallback] of Object.entries(OPTIONAL)) cfg[key] = pick(key) || fallback;
   return cfg;
 }
 

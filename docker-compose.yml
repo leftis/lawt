@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────
-# RawVault — Local Development Stack
+# lawt — Local Development Stack
 # ──────────────────────────────────────────────
 # Runs:
 #   1. LocalStack      → Local AWS (S3, Cognito, Lambda, API Gateway mock)
@@ -14,7 +14,7 @@ services:
   # ── LocalStack: Local AWS ───────────────────
   localstack:
     image: localstack/localstack:3.8
-    container_name: rawvault-localstack
+    container_name: lawt-localstack
     ports:
       - "4566:4566"       # LocalStack API
       - "4571:4571"       # LocalStack HTTPS
@@ -39,7 +39,7 @@ services:
   # ── Mock API Server: Full local backend ─────
   mock-api:
     image: node:24-alpine
-    container_name: rawvault-mock-api
+    container_name: lawt-mock-api
     working_dir: /app
     ports:
       - "3001:3001"
@@ -49,7 +49,7 @@ services:
       sh -c "npm install --production 2>&1 && node index.js"
     environment:
       - MOCK_PORT=3001
-      - MOCK_BUCKET_NAME=${EXISTING_BUCKET_NAME:-rawvault-mock}
+      - MOCK_BUCKET_NAME=${EXISTING_BUCKET_NAME:-lawt-mock}
       - MOCK_API_BASE_URL=http://localhost:3001/api
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001/health"]
@@ -60,7 +60,7 @@ services:
   # ── Frontend: Vite dev server ───────────────
   frontend:
     image: node:24-alpine
-    container_name: rawvault-frontend
+    container_name: lawt-frontend
     working_dir: /app
     ports:
       - "${VITE_DEV_PORT:-5173}:${VITE_DEV_PORT:-5173}"

@@ -1,22 +1,22 @@
 ---
-name: rawvault-aws-cdk
-description: Use when touching RawVault AWS infrastructure or Node Lambdas: CDK stack, API Gateway, Cognito, S3, CloudFront, IAM, CORS, deploys, or anything under infra/cdk/.
+name: lawt-aws-cdk
+description: Use when touching lawt AWS infrastructure or Node Lambdas: CDK stack, API Gateway, Cognito, S3, CloudFront, IAM, CORS, deploys, or anything under infra/cdk/.
 ---
 
-# RawVault AWS / CDK / Lambdas (Rust target, Node legacy)
+# lawt AWS / CDK / Lambdas (Rust target, Node legacy)
 
-Region, account and resource ids come from `rawvault.env` (see `rawvault.env.example`). Single stack `RawVaultStack` (`infra/cdk/lib/rawvault-stack.js`). Runbook facts live in `AGENTS.md`; architecture in `docs/ARCHITECTURE.md`.
+Region, account and resource ids come from `lawt.env` (see `lawt.env.example`). Single stack `LawtStack` (`infra/cdk/lib/lawt-stack.js`). Runbook facts live in `AGENTS.md`; architecture in `docs/ARCHITECTURE.md`.
 
 ## Hard rules
 0. **Never touch the photo bucket `<photo-bucket>`** (no list/read/write/delete via CLI or SDK) without explicit owner approval for that specific action. Read-only checks of other resources (CloudFormation, Cognito, API Gateway) are fine. Profile is `default`, region eu-west-1.
 1. **Do not deploy, delete or mutate live AWS unless the owner asks in this session.** Read-only AWS CLI queries to verify state are fine.
-2. Never delete `RawVaultStack`. The photo bucket and Cognito pool are imported (not owned by CDK): never add code that could replace/remove them.
+2. Never delete `LawtStack`. The photo bucket and Cognito pool are imported (not owned by CDK): never add code that could replace/remove them.
 3. Always `--region eu-west-1`. Confirm with `aws configure get region`.
 4. No secrets in code, env files, docs or commits. Use IAM roles / profiles.
 5. Write `.js` files in `infra/` with `Write`, not `Edit` (U+00AD corruption).
 
 ## Workflow for an infra/Lambda change
-1. Read the stack and the affected Lambda; grep for the asset path in `rawvault-stack.js` before editing (Lambda dirs: `auth`, `list-images`, `download-signer`, `batch-download-signer`, `preview-trigger`, `preview-generator-rust`; `api/` is unused).
+1. Read the stack and the affected Lambda; grep for the asset path in `lawt-stack.js` before editing (Lambda dirs: `auth`, `list-images`, `download-signer`, `batch-download-signer`, `preview-trigger`, `preview-generator-rust`; `api/` is unused).
 2. Make the change; `cd infra/cdk && npx cdk synth --region eu-west-1`.
 3. `grep` synthesized output for stale values: old CloudFront domains (`<dead-cdn-id>` is dead), old client id `<old-client-id>`, `prodauth`.
 4. Show the `cdk diff` to the owner before deploy. Deploy via `make deploy` (builds Rust + frontend first, because `BucketDeployment` ships `frontend/dist`).

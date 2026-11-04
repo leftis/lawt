@@ -4,7 +4,7 @@ There is no automated check. The repo has 77 Rust tests, 17 frontend tests, stri
 ## What to do
 - Job 1: `cargo fmt --check`, `cargo clippy --workspace --all-targets --all-features -- -D warnings`, `cargo test --workspace --all-features`.
 - Job 2: `npm ci`, `npm run typecheck`, `npm test`, `npm run build`.
-- Job 3: `cdk synth` with a dummy `rawvault.env` and stub Lambda assets.
+- Job 3: `cdk synth` with a dummy `lawt.env` and stub Lambda assets.
 - Fail if regenerating the TypeScript types changes any file in `frontend/src/api/generated/`.
 - No deploy from CI.
 

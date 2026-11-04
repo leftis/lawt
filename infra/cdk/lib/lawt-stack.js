@@ -10,10 +10,14 @@ const cloudfront_origins = require('aws-cdk-lib/aws-cloudfront-origins');
 const secretsmanager = require('aws-cdk-lib/aws-secretsmanager');
 const path = require('path');
 
-class RawVaultStack extends cdk.Stack {
+class LawtStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
     const config = props.config;
+    // Construct ids below that still start with "RawVault" (RawVaultBucket, RawVaultAppClient,
+    // RawVaultFrontendBucket, RawVaultAPI) are CloudFormation logical ids. They come from the
+    // project's old name. Renaming them makes CloudFormation replace the resource, so keep them.
+    const app = config.APP_NAME; // prefix of every physical resource name, for example "lawt"
 
     // ── Helper: Add CORS OPTIONS method to any API Gateway resource ────
     const addCorsOptions = (resource) => {
@@ -68,7 +72,7 @@ class RawVaultStack extends cdk.Stack {
     // Secret salt for photo ids. Rendition URLs contain the id, so without a secret they could be
     // computed from a folder and file name. Created always and RETAINED: changing it changes every id.
     const idSalt = new secretsmanager.Secret(this, 'IdSalt', {
-      description: 'RawVault photo id salt (keeps rendition URLs unguessable). Do not rotate casually.',
+      description: `${app} photo id salt (keeps rendition URLs unguessable). Do not rotate casually.`,
       generateSecretString: { passwordLength: 48, excludePunctuation: true },
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
@@ -82,7 +86,7 @@ class RawVaultStack extends cdk.Stack {
 
     // ── 3. Lambda Functions ────────────────────────────────
     const authLambda = new lambda.Function(this, 'AuthFunction', {
-      functionName: 'rawvault-auth',
+      functionName: `${app}-auth`,
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('src/lambda/auth'),
@@ -96,7 +100,7 @@ class RawVaultStack extends cdk.Stack {
     });
 
     const listImagesLambda = new lambda.Function(this, 'ListImagesFunction', {
-      functionName: 'rawvault-list-images',
+      functionName: `${app}-list-images`,
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('src/lambda/list-images'),
@@ -109,7 +113,7 @@ class RawVaultStack extends cdk.Stack {
     });
 
     const downloadSignerLambda = new lambda.Function(this, 'DownloadSignerFunction', {
-      functionName: 'rawvault-download-signer',
+      functionName: `${app}-download-signer`,
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('src/lambda/download-signer'),
@@ -122,7 +126,7 @@ class RawVaultStack extends cdk.Stack {
     });
 
     const previewGeneratorLambda = new lambda.Function(this, 'PreviewGeneratorFunction', {
-      functionName: 'rawvault-preview-generator',
+      functionName: `${app}-preview-generator`,
       runtime: lambda.Runtime.PROVIDED_AL2023,
       architecture: lambda.Architecture.ARM_64,
       handler: 'bootstrap',
@@ -136,7 +140,7 @@ class RawVaultStack extends cdk.Stack {
     });
 
     const previewTriggerLambda = new lambda.Function(this, 'PreviewTriggerFunction', {
-      functionName: 'rawvault-preview-trigger',
+      functionName: `${app}-preview-trigger`,
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('src/lambda/preview-trigger'),
@@ -149,7 +153,7 @@ class RawVaultStack extends cdk.Stack {
     });
 
     const batchDownloadSignerLambda = new lambda.Function(this, 'BatchDownloadSignerFunction', {
-      functionName: 'rawvault-batch-download-signer',
+      functionName: `${app}-batch-download-signer`,
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('src/lambda/batch-download-signer'),
@@ -175,7 +179,7 @@ class RawVaultStack extends cdk.Stack {
 
     // ── CloudFront Distribution for S3 downloads (preview/raw files) ──
     const downloadCloudFront = new cloudfront.Distribution(this, 'DownloadCloudFront', {
-      comment: 'RawVault S3 download CDN',
+      comment: `${app} S3 download CDN`,
       defaultRootObject: '',
       errorResponses: [
         { httpStatus: 403, responseHttpStatus: 403, responsePagePath: '/index.html' },
@@ -214,7 +218,7 @@ class RawVaultStack extends cdk.Stack {
         "return event.request; }"),
     });
     const renditionCdn = new cloudfront.Distribution(this, 'RenditionCdn', {
-      comment: 'RawVault renditions (derived bucket)',
+      comment: `${app} renditions (derived bucket)`,
       defaultBehavior: {
         origin: cloudfront_origins.S3BucketOrigin.withOriginAccessControl(derivedBucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -229,7 +233,7 @@ class RawVaultStack extends cdk.Stack {
     });
 
     const cloudFrontDistribution = new cloudfront.Distribution(this, 'FrontendDistribution', {
-      comment: 'RawVault Frontend',
+      comment: `${app} frontend`,
       defaultRootObject: 'index.html',
       errorResponses: [
         { httpStatus: 403, responseHttpStatus: 200, responsePagePath: '/index.html' },
@@ -258,7 +262,7 @@ class RawVaultStack extends cdk.Stack {
     const frontendUrl = `https://${cloudFrontDistribution.distributionDomainName}`;
     // Rust API: serves the timeline read model from the derived bucket (read-only, no access to originals).
     const apiLambda = new lambda.Function(this, 'ApiFunction', {
-      functionName: 'rawvault-api',
+      functionName: `${app}-api`,
       runtime: lambda.Runtime.PROVIDED_AL2023,
       architecture: lambda.Architecture.ARM_64,
       handler: 'bootstrap',
@@ -274,8 +278,8 @@ class RawVaultStack extends cdk.Stack {
     derivedBucket.grantRead(apiLambda);
 
     const api = new apigw.RestApi(this, 'RawVaultAPI', {
-      restApiName: 'RawVault API',
-      description: 'RawVault RAW Image Preview & Delivery API',
+      restApiName: `${app} API`,
+      description: `${app}: RAW photo timeline API`,
       // Month pages are JSON (up to a few hundred KB); gzip shrinks them roughly tenfold for clients that accept it.
       minCompressionSize: cdk.Size.bytes(1024),
       defaultCorsPreflight: {
@@ -373,7 +377,7 @@ class RawVaultStack extends cdk.Stack {
     // bucket, so it is a deliberate, owner-approved step: `cdk deploy -c enablePipeline=true`.
     if (this.node.tryGetContext('enablePipeline') === 'true' || this.node.tryGetContext('enablePipeline') === true) {
       const pipelineLambda = new lambda.Function(this, 'PipelineFunction', {
-        functionName: 'rawvault-pipeline',
+        functionName: `${app}-pipeline`,
         runtime: lambda.Runtime.PROVIDED_AL2023,
         architecture: lambda.Architecture.ARM_64,
         handler: 'bootstrap',
@@ -460,4 +464,4 @@ class RawVaultStack extends cdk.Stack {
   }
 }
 
-module.exports = { RawVaultStack };
+module.exports = { LawtStack };

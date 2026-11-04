@@ -3,7 +3,7 @@
 // Rust guideline compliant 2026-07-03
 
 use chrono::NaiveDateTime;
-use rawvault_common::{AssetId, CameraExif, Photo};
+use lawt_common::{AssetId, CameraExif, Photo};
 use serde::{Deserialize, Serialize};
 
 /// Object key prefix of records in the derived bucket.

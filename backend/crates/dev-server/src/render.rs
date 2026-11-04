@@ -12,7 +12,7 @@
 
 use image::codecs::jpeg::JpegEncoder;
 use image::{ExtendedColorType, RgbImage};
-use rawvault_common::{Photo, Rendition};
+use lawt_common::{Photo, Rendition};
 
 /// JPEG quality for placeholders; small files, faithful enough for layout work.
 const QUALITY: u8 = 72;

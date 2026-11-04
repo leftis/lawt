@@ -1,11 +1,11 @@
 ---
-name: rawvault-preview-pipeline
-description: Use when working on RawVault image preview generation — the Rust Lambda (rawler/image), derivative key naming (.thumbnail/.medium/.full), RAW/TIFF/JPEG decoding, batch generation, or list/sign logic that depends on derivatives.
+name: lawt-preview-pipeline
+description: Use when working on lawt image preview generation — the Rust Lambda (rawler/image), derivative key naming (.thumbnail/.medium/.full), RAW/TIFF/JPEG decoding, batch generation, or list/sign logic that depends on derivatives.
 ---
 
-# RawVault preview pipeline
+# lawt preview pipeline
 
-Rust Lambda at `infra/cdk/src/lambda/preview-generator-rust/` (crate `rawvault-preview-generator`, binary `bootstrap`, arm64, `provided.al2023`, 1024 MB, 15 min). Also load `rust-engineer` / `rust-best-practices` (and `ms-rust`, which is mandatory before touching any `.rs` file).
+Rust Lambda at `infra/cdk/src/lambda/preview-generator-rust/` (crate `lawt-preview-generator`, binary `bootstrap`, arm64, `provided.al2023`, 1024 MB, 15 min). Also load `rust-engineer` / `rust-best-practices` (and `ms-rust`, which is mandatory before touching any `.rs` file).
 
 ## Contract (keep these in sync everywhere)
 Derivatives are written next to the original: `<key>.thumbnail.jpeg` (~400px), `<key>.medium.jpeg` (~1920px), `<key>.full.jpeg`. Legacy `.preview.png/.jpg` are read-only fallbacks.

@@ -5,9 +5,9 @@
 use std::backtrace::Backtrace;
 use std::fmt::{self, Display, Formatter};
 
-use rawvault_common::{MonthKey, MonthPage, TimelineIndex};
+use lawt_common::{MonthKey, MonthPage, TimelineIndex};
 
-use rawvault_common::readmodel::{INDEX_KEY, MONTHS_PREFIX};
+use lawt_common::readmodel::{INDEX_KEY, MONTHS_PREFIX};
 
 #[derive(Debug)]
 enum ErrorKind {

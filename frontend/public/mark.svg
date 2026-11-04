@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="lawt">
+  <title>lawt</title>
+  <polygon points="256.0,56.0 429.2,156.0 347.1,268.8 274.7,214.0" fill="#e94560" stroke="#14141c" stroke-width="6" stroke-linejoin="round"/>
+    <polygon points="429.2,156.0 429.2,356.0 290.5,341.3 301.7,251.2" fill="#f26b82" stroke="#14141c" stroke-width="6" stroke-linejoin="round"/>
+    <polygon points="429.2,356.0 256.0,456.0 199.4,328.5 283.0,293.2" fill="#d63a55" stroke="#14141c" stroke-width="6" stroke-linejoin="round"/>
+    <polygon points="256.0,456.0 82.8,356.0 164.9,243.2 237.3,298.0" fill="#f05a73" stroke="#14141c" stroke-width="6" stroke-linejoin="round"/>
+    <polygon points="82.8,356.0 82.8,156.0 221.5,170.7 210.3,260.8" fill="#c9304c" stroke="#14141c" stroke-width="6" stroke-linejoin="round"/>
+    <polygon points="82.8,156.0 256.0,56.0 312.6,183.5 229.0,218.8" fill="#f7899b" stroke="#14141c" stroke-width="6" stroke-linejoin="round"/>
+</svg>

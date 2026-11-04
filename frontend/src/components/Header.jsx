@@ -3,6 +3,8 @@
  * ─────────────────
  * Sticky header with logo, gallery filter, view controls, and logout
  */
+import { Logo } from "./Logo";
+
 export default function Header({
   user,
   onLogout,
@@ -16,8 +18,8 @@ export default function Header({
     <header className="header">
       <div className="header-inner">
         <a href="#" className="logo" onClick={(e) => e.preventDefault()}>
-          <span className="logo-icon">RV</span>
-          RawVault
+          <Logo size={28} />
+          lawt
         </a>
 
         <div className="header-actions">
@@ -55,7 +57,7 @@ export default function Header({
           {/* User badge */}
           <div className="user-badge">
             <span className="user-dot" />
-            {user?.email || "dev@rawvault.local"}
+            {user?.email || "dev@lawt.local"}
           </div>
 
           {/* Logout */}

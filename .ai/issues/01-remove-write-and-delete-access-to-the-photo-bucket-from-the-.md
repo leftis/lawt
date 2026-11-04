@@ -1,5 +1,5 @@
 ## Why
-`storageBucket.grantReadWrite(previewGeneratorLambda)` in `infra/cdk/lib/rawvault-stack.js` gives the legacy Lambda put, overwrite and delete on every original. The new pipeline only needs read, and nothing in the legacy code deletes, so the permission is risk without a use.
+`storageBucket.grantReadWrite(previewGeneratorLambda)` in `infra/cdk/lib/lawt-stack.js` gives the legacy Lambda put, overwrite and delete on every original. The new pipeline only needs read, and nothing in the legacy code deletes, so the permission is risk without a use.
 
 ## What to do
 - Change the grant to read-only, or delete the function (see the issue that retires the legacy preview generator).

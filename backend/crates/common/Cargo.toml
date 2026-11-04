@@ -1,6 +1,6 @@
 [package]
-name = "rawvault-common"
-description = "Pure domain logic shared by RawVault backend Lambdas: formats, keys, assets, timeline."
+name = "lawt-common"
+description = "Pure domain logic shared by lawt backend Lambdas: formats, keys, assets, timeline."
 version.workspace = true
 edition.workspace = true
 license.workspace = true

@@ -35,7 +35,7 @@ impl IdSalt {
     /// A fixed, publicly known salt for local development and tests. Never use it in production.
     #[must_use]
     pub fn insecure_dev() -> Self {
-        Self(b"rawvault-dev-only-salt".to_vec())
+        Self(b"lawt-dev-only-salt".to_vec())
     }
 }
 
@@ -125,7 +125,7 @@ pub struct Grouping {
 ///
 /// # Examples
 /// ```
-/// use rawvault_common::{OriginalKey, IdSalt, group_assets, FileKind};
+/// use lawt_common::{OriginalKey, IdSalt, group_assets, FileKind};
 /// let keys = ["all images/1/R1.RAF", "all images/1/R1.JPG", "all images/1/R2.JPG"]
 ///     .map(|k| OriginalKey::parse(k).unwrap());
 /// let g = group_assets(keys, &IdSalt::insecure_dev());

@@ -1,4 +1,4 @@
-# RawVault TODO
+# lawt TODO
 
 > The open work is also written as ready-to-file GitHub issues in [`.ai/issues/`](.ai/issues/index.json). File them with `python3 .ai/issues/create_issues.py --repo OWNER/NAME`.
 
@@ -17,7 +17,7 @@ Convention: `[ ]` open, `[x]` done (add date + commit). Effort: S <1h, M half-da
 - [x] T1 Frontend TypeScript foundation (strict, typecheck in build, typed `api/` client, generated types)
 - [x] T2 Rust dev server replaces the Node mock for timeline work (`backend/crates/dev-server`, port 3002)
 - [x] T3 Timeline UI (TS): virtualized justified grid, sticky day headers, scrubber (label above headers), viewer + prefetch, gallery/RAW filters; browser-verified desktop + mobile
-- [x] T4 Rust API: `crates/api` core, `crates/api-lambda` (deployed as `rawvault-api`), dev-server
+- [x] T4 Rust API: `crates/api` core, `crates/api-lambda` (deployed as `lawt-api`), dev-server
 - [x] T5 `crates/pipeline` (plan / process / publish, read-only originals port) + `crates/pipeline-lambda` (built for arm64, **not deployed**: `-c enablePipeline=true`)
 - [x] T6 `crates/processor`: RAW embedded preview (rawler), TIFF 16-bit, PNG/WebP/GIF/BMP/JPEG, orientation, resize; HEIC reported unsupported. Only synthetic images tested
 - [x] T7 CDK: derived bucket, salted ids secret, rendition CDN (`/derived/*` only), Rust API + routes, gated pipeline function with read-only photo-bucket access
@@ -25,12 +25,12 @@ Convention: `[ ]` open, `[x]` done (add date + commit). Effort: S <1h, M half-da
 - [x] T10 Pipeline enabled and run on the whole library 2026-09-25 (owner approved, read-only): 7,826 photos, 277.8 GB originals, 15.1 GB derived, 1 failed (`100_FUJI/DSCF0025.RAF`, no embedded preview). RAW orientation and dates verified on real DNG/JPG; TIFF colour (16-bit/ICC) still unverified.
 
 ## P0 — Protect the originals
-- [ ] Remove write/delete on the photo bucket from every Lambda role (`grantReadWrite` on preview generator → read-only); write derivatives to a new `rawvault-derived-<account>` bucket. Needs owner approval before any deploy. (M)
+- [ ] Remove write/delete on the photo bucket from every Lambda role (`grantReadWrite` on preview generator → read-only); write derivatives to a new `lawt-derived-<account>` bucket. Needs owner approval before any deploy. (M)
 - [ ] Owner decision: backup strategy for the photo bucket (versioning / replication / Deep Archive copy). We do not enable it ourselves. (S)
 - [ ] Replace S3-event design with scheduled read-only reconcile (no bucket config changes). (M)
 
 ## P0 — Language migration (owner policy: Rust backend, React+TS frontend)
-- [x] 2026-09-25 `backend/` workspace + `rawvault-common` crate (formats, key validation, asset grouping, rendition keys, timeline model, TS type generation), 27 tests, clippy pedantic clean.
+- [x] 2026-09-25 `backend/` workspace + `lawt-common` crate (formats, key validation, asset grouping, rendition keys, timeline model, TS type generation), 27 tests, clippy pedantic clean.
 - [ ] Cargo workspace for lambdas (`common`, `api`, `indexer`, `preview-generator`); port `list-images`, `download-signer`, `batch-download-signer`, `preview-trigger`, `auth` to Rust (one `api` binary); delete Node Lambdas and `api/`. (L)
 - [x] TS types generated from Rust into `frontend/src/api/generated/` (`cargo test --all-features` in `backend/`; commit the output). Frontend still to consume them. (S)
 - [ ] Frontend → TypeScript: `tsconfig` strict, `typecheck` script, migrate `api.js` first, then components as touched. (M)
@@ -91,7 +91,7 @@ Convention: `[ ]` open, `[x]` done (add date + commit). Effort: S <1h, M half-da
 
 ## Found during T9 (fix soon)
 - [ ] Legacy Lambdas still echo `Access-Control-Allow-Origin: *`; the API is now authenticated, but tighten it (shared helper) while porting to Rust.
-- [ ] `rawvault-preview-generator` role has read/WRITE/DELETE on the photo bucket (`grantReadWrite`); the new pipeline replaces it, then remove that grant.
+- [ ] `lawt-preview-generator` role has read/WRITE/DELETE on the photo bucket (`grantReadWrite`); the new pipeline replaces it, then remove that grant.
 - [ ] `DownloadCloudFront` (photo bucket, OAI) cannot read the imported bucket and is unused; delete it after confirming.
 - [ ] Node 20 runtime is deprecated (update blocked 2027-03); port the remaining Node Lambdas to Rust (list-images, signers, auth, preview-trigger) and remove `/preview` route.
 - [ ] Remove the old Node mock (`infra/mock-api`, docker-compose `mock-api`) once nothing uses it (Docker container on :3001 still runs it).

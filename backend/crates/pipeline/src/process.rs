@@ -3,9 +3,9 @@
 // Rust guideline compliant 2026-07-03
 
 use futures::stream::{self, StreamExt};
-use rawvault_common::rendition::Rendition;
-use rawvault_common::{Asset, FileKind, OriginalKey, Photo, TakenAtSource, resolve_taken_at};
-use rawvault_processor::{ProcessError, Processed};
+use lawt_common::rendition::Rendition;
+use lawt_common::{Asset, FileKind, OriginalKey, Photo, TakenAtSource, resolve_taken_at};
+use lawt_processor::{ProcessError, Processed};
 
 use crate::plan::Todo;
 use crate::ports::{Derived, Originals, PortError};
@@ -145,7 +145,7 @@ async fn render(
 ) -> Result<Result<Processed, ProcessError>, PortError> {
     let bytes = originals.get(key).await?;
     Ok(
-        tokio::task::spawn_blocking(move || rawvault_processor::process(kind, &bytes))
+        tokio::task::spawn_blocking(move || lawt_processor::process(kind, &bytes))
             .await
             .unwrap_or_else(|e| Err(ProcessError::from_panic(&e.to_string()))),
     )

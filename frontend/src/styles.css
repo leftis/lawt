@@ -1,5 +1,5 @@
 /* ──────────────────────────────────────────────
-   RawVault — Global Styles
+   lawt — Global Styles
    ────────────────────────────────────────────── */
 
 :root {
@@ -193,19 +193,6 @@ body {
   text-decoration: none;
 }
 
-.logo-icon {
-  width: 32px;
-  height: 32px;
-  background: var(--accent);
-  border-radius: var(--radius);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  color: white;
-}
-
 .header-actions {
   display: flex;
   align-items: center;
@@ -256,16 +243,8 @@ body {
 }
 
 .login-logo {
-  width: 56px;
-  height: 56px;
-  background: var(--accent);
-  border-radius: 16px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 1.25rem;
-  color: white;
   margin: 0 auto 16px;
 }
 

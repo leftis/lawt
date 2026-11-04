@@ -82,8 +82,8 @@
     ]
   },
   {
-    "file": "10-retire-the-legacy-rawvault-preview-generator-and-preview-tri.md",
-    "title": "Retire the legacy `rawvault-preview-generator` and `preview-trigger` functions",
+    "file": "10-retire-the-legacy-lawt-preview-generator-and-preview-tri.md",
+    "title": "Retire the legacy `lawt-preview-generator` and `preview-trigger` functions",
     "labels": [
       "tech-debt",
       "infra",

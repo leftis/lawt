@@ -1,6 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# RawVault — Makefile
-# Settings come from rawvault.env (copy rawvault.env.example). AWS credentials: your usual profile.
+# lawt — Makefile
+# Settings come from lawt.env (copy lawt.env.example). AWS credentials: your usual profile.
 #   make deploy                                     deploy the stack
 #   make deploy CDK_FLAGS='-c enablePipeline=true'  deploy with the indexing pipeline function
 # ─────────────────────────────────────────────────────────────────────────────
@@ -10,18 +10,19 @@ CDK_DIR      := infra/cdk
 FRONTEND_DIR := frontend
 RUST_SRC     := infra/cdk/src/lambda/preview-generator-rust
 RUST_OUT     := $(RUST_SRC)/target/lambda/bootstrap
-# Two values read literally from rawvault.env (no quote removal, no expansion).
-REGION       := $(shell sed -n 's/^AWS_REGION=//p' rawvault.env 2>/dev/null)
-ACCOUNT      := $(shell sed -n 's/^AWS_ACCOUNT=//p' rawvault.env 2>/dev/null)
+# Two values read literally from lawt.env (no quote removal, no expansion).
+REGION       := $(shell sed -n 's/^AWS_REGION=//p' lawt.env 2>/dev/null)
+ACCOUNT      := $(shell sed -n 's/^AWS_ACCOUNT=//p' lawt.env 2>/dev/null)
 CDK_FLAGS    ?=
-CF_STACK     := RawVaultStack
+APP_NAME     := $(or $(shell sed -n 's/^APP_NAME=//p' lawt.env 2>/dev/null),lawt)
+CF_STACK     := $(or $(shell sed -n 's/^STACK_NAME=//p' lawt.env 2>/dev/null),LawtStack)
 
 .PHONY: help preflight build-rust build-frontend synth deploy validate all clean
 
 # ── Default ────────────────────────────────────────────────────────────────
 help:
 	@echo ""
-	@echo "  RawVault Deploy Targets"
+	@echo "  lawt Deploy Targets"
 	@echo "  ───────────────────────────────────────────────────"
 	@echo "  make preflight       Verify AWS credentials & region"
 	@echo "  make build-rust      Cross-compile the Rust preview-generator Lambda"
@@ -54,19 +55,19 @@ preflight:
 # ── 2. Build Rust Lambda ───────────────────────────────────────────────────
 build-rust:
 	@echo "🦀 Building the Rust API and pipeline Lambdas (arm64, needs zig)..."
-	@cd backend && cargo lambda build --release --arm64 -p rawvault-api-lambda -p rawvault-pipeline-lambda
+	@cd backend && cargo lambda build --release --arm64 -p lawt-api-lambda -p lawt-pipeline-lambda
 	@echo "🦀 Building the legacy Rust preview-generator Lambda (arm64)..."
 	@cd $(RUST_SRC) && \
-		cargo lambda build --release --arm64 2>&1 | tee /tmp/rawvault-rust-build.log
+		cargo lambda build --release --arm64 2>&1 | tee /tmp/lawt-rust-build.log
 	@# cargo-lambda outputs to target/lambda/<bin-name>/bootstrap — normalise to target/lambda/bootstrap
 	@if [ -f "$(RUST_SRC)/target/lambda/bootstrap/bootstrap" ]; then \
 		echo "✅  Binary already at $(RUST_OUT)/bootstrap"; \
-	elif [ -f "$(RUST_SRC)/target/lambda/rawvault-preview-generator/bootstrap" ]; then \
+	elif [ -f "$(RUST_SRC)/target/lambda/lawt-preview-generator/bootstrap" ]; then \
 		mkdir -p $(RUST_OUT) && \
-		cp $(RUST_SRC)/target/lambda/rawvault-preview-generator/bootstrap $(RUST_OUT)/bootstrap && \
+		cp $(RUST_SRC)/target/lambda/lawt-preview-generator/bootstrap $(RUST_OUT)/bootstrap && \
 		echo "✅  Binary copied → $(RUST_OUT)/bootstrap"; \
 	else \
-		echo "❌  Bootstrap binary not found — check /tmp/rawvault-rust-build.log"; exit 1; \
+		echo "❌  Bootstrap binary not found — check /tmp/lawt-rust-build.log"; exit 1; \
 	fi
 	@ls -lh $(RUST_OUT)/bootstrap
 
@@ -85,31 +86,31 @@ synth:
 	@cd $(CDK_DIR) && \
 		npm install --silent && \
 		CDK_DEFAULT_ACCOUNT=$(ACCOUNT) CDK_DEFAULT_REGION=$(REGION) \
-		npx cdk synth --region $(REGION) 2>&1 | tee /tmp/rawvault-synth.log | tail -20
-	@if grep -qiE "^Error:|^TypeError:|failed to|Synthesis failed" /tmp/rawvault-synth.log; then \
-		echo "❌  CDK synth failed — see /tmp/rawvault-synth.log"; exit 1; \
+		npx cdk synth --region $(REGION) 2>&1 | tee /tmp/lawt-synth.log | tail -20
+	@if grep -qiE "^Error:|^TypeError:|failed to|Synthesis failed" /tmp/lawt-synth.log; then \
+		echo "❌  CDK synth failed — see /tmp/lawt-synth.log"; exit 1; \
 	fi
 	@echo "✅  CDK synth passed"
 
 # ── 5. Deploy ──────────────────────────────────────────────────────────────
 deploy: preflight build-rust build-frontend synth
-	@echo "🚀 Deploying RawVaultStack to $(REGION)..."
+	@echo "🚀 Deploying $(CF_STACK) to $(REGION)..."
 	@cd $(CDK_DIR) && \
 		CDK_DEFAULT_ACCOUNT=$(ACCOUNT) CDK_DEFAULT_REGION=$(REGION) \
 		npx cdk deploy --all $(CDK_FLAGS) \
 		  --require-approval never \
 		  --region $(REGION) \
-		  --outputs-file /tmp/rawvault-outputs.json \
-		  2>&1 | tee /tmp/rawvault-deploy.log
-	@if grep -qiE "^Error:|FAILED|rolled back|UPDATE_ROLLBACK" /tmp/rawvault-deploy.log; then \
-		echo "❌  Deploy failed — check /tmp/rawvault-deploy.log"; exit 1; \
+		  --outputs-file /tmp/lawt-outputs.json \
+		  2>&1 | tee /tmp/lawt-deploy.log
+	@if grep -qiE "^Error:|FAILED|rolled back|UPDATE_ROLLBACK" /tmp/lawt-deploy.log; then \
+		echo "❌  Deploy failed — check /tmp/lawt-deploy.log"; exit 1; \
 	fi
 	@echo ""
 	@echo "📋 Stack outputs:"
-	@cat /tmp/rawvault-outputs.json | python3 -c \
+	@cat /tmp/lawt-outputs.json | python3 -c \
 		"import json,sys; d=json.load(sys.stdin); \
 		 [[print(f'  {k}: {v}') for k,v in s.items()] for s in d.values()]" 2>/dev/null || \
-		cat /tmp/rawvault-outputs.json
+		cat /tmp/lawt-outputs.json
 	@echo ""
 	@echo "✅  Deploy complete"
 
@@ -154,11 +155,11 @@ validate:
 	echo "  ✅  Cognito client ID resolved from live stack"
 	@# Verify the Rust Lambda is alive
 	@RUST_RESULT=$$(aws lambda invoke \
-		--function-name rawvault-preview-generator \
+		--function-name $(APP_NAME)-preview-generator \
 		--region $(REGION) \
 		--payload '{"key":"__healthcheck__"}' \
 		--cli-binary-format raw-in-base64-out \
-		/tmp/rawvault-lambda-health.json \
+		/tmp/lawt-lambda-health.json \
 		--query 'StatusCode' --output text 2>/dev/null); \
 	echo "  Rust Lambda invoke status: $$RUST_RESULT"; \
 	if [ "$$RUST_RESULT" = "200" ]; then \

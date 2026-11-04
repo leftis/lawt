@@ -1,4 +1,4 @@
-//! AWS Lambda entrypoint for the RawVault API.
+//! AWS Lambda entrypoint for the lawt API.
 //!
 //! Serves the timeline read model that the indexer wrote into the derived bucket.
 //! Reads only; it has no permission to write anywhere and none to touch the photo bucket.
@@ -15,7 +15,7 @@ use aws_sdk_s3::error::SdkError;
 use aws_sdk_s3::operation::get_object::GetObjectError;
 use lambda_http::http::{HeaderValue, header};
 use lambda_http::{Body, Error, Request, Response, run, service_fn};
-use rawvault_api::{ObjectLibrary, ObjectReader, StoreError, allowed_origin, handle};
+use lawt_api::{ObjectLibrary, ObjectReader, StoreError, allowed_origin, handle};
 
 /// Reads objects from the derived bucket.
 #[derive(Debug, Clone)]

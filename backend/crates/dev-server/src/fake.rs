@@ -5,8 +5,8 @@
 use std::collections::HashMap;
 
 use chrono::{Duration, NaiveDate, NaiveDateTime};
-use rawvault_api::{Library, StoreError};
-use rawvault_common::{
+use lawt_api::{Library, StoreError};
+use lawt_common::{
     AssetId, IdSalt, MonthKey, MonthPage, Photo, TakenAtSource, TimelineIndex, build_index,
     group_by_month,
 };

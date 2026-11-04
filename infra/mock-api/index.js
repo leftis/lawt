@@ -1,7 +1,7 @@
 /**
- * RawVault Mock API Server
+ * lawt Mock API Server
  * ───────────────────────────
- * A lightweight Express server that mimics the RawVault REST API
+ * A lightweight Express server that mimics the lawt REST API
  * for local frontend development without AWS.
  *
  * Endpoints:
@@ -44,7 +44,7 @@ function authenticate(req, res, next) {
   }
 
   // Attach mock user info
-  req.user = { sub: "mock-user-id", email: "dev@rawvault.local" };
+  req.user = { sub: "mock-user-id", email: "dev@lawt.local" };
   next();
 }
 
@@ -140,7 +140,7 @@ function generateMockPresignedUrl(key) {
   const expiry = Date.now() + 15 * 60 * 1000; // 15 min
   const signature = crypto.randomBytes(16).toString("hex");
   return (
-    `https://rawvault-storage.s3.amazonaws.com/${key}` +
+    `https://lawt-storage.s3.amazonaws.com/${key}` +
     `?AWSAccessKeyId=mock-access-key` +
     `&Expires=${Math.floor(expiry / 1000)}` +
     `&Signature=${signature}`
@@ -153,7 +153,7 @@ function generateMockPresignedUrl(key) {
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
-    service: "rawvault-mock-api",
+    service: "lawt-mock-api",
     auth: SKIP_AUTH ? "disabled" : "enabled",
     timestamp: new Date().toISOString(),
   });
@@ -236,7 +236,7 @@ function createPlaceholderImage(width, height, color) {
 
 // ── Start Server ───────────────────────────────
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`\n  RawVault Mock API Server`);
+  console.log(`\n  lawt Mock API Server`);
   console.log(`  ──────────────────────`);
   console.log(`  Running at:    http://localhost:${PORT}`);
   console.log(`  API at:        http://localhost:${PORT}/api`);

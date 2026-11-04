@@ -6,6 +6,7 @@
  * - Cognito (production) — AWS Amplify / Cognito Hosted UI auth flow
  */
 import { useState, useEffect } from "react";
+import { Logo } from "./Logo";
 import { setAuthToken, exchangeCode } from "../api";
 
 const IS_LOCAL = import.meta.env.VITE_API_BASE_URL?.includes("localhost");
@@ -19,7 +20,7 @@ export default function Login({ onLogin }) {
 
   useEffect(() => {
     // Check for existing token
-    const token = localStorage.getItem("rawvault_token");
+    const token = localStorage.getItem("lawt_token");
     if (token && !IS_LOCAL) {
       setAuthToken(token);
       onLogin();
@@ -124,8 +125,8 @@ export default function Login({ onLogin }) {
     <div className="login-page">
       <div className="login-card">
         <div className="login-header">
-          <div className="login-logo">RV</div>
-          <h1>RawVault</h1>
+          <div className="login-logo"><Logo size={56} /></div>
+          <h1>lawt</h1>
           <p>{IS_LOCAL ? "Local Development Mode" : "RAW Image Preview System"}</p>
         </div>
 

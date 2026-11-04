@@ -1,5 +1,5 @@
 [package]
-name = "rawvault-processor"
+name = "lawt-processor"
 description = "Decodes photos of any supported format and produces thumbnail, medium and full JPEG renditions."
 version.workspace = true
 edition.workspace = true
@@ -12,7 +12,7 @@ default = ["raw"]
 raw = ["dep:rawler"]
 
 [dependencies]
-rawvault-common = { path = "../common" }
+lawt-common = { path = "../common" }
 chrono = { workspace = true }
 image = { version = "0.25", default-features = false, features = ["jpeg", "png", "tiff", "webp", "gif", "bmp"] }
 kamadak-exif = "0.6"

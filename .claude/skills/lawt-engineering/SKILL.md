@@ -1,11 +1,11 @@
 ---
-name: rawvault-engineering
-description: Use for any non-trivial RawVault change or design decision — architecture, performance budgets, security review, testing, and definition of done. Load alongside the stack skill for the area you are touching.
+name: lawt-engineering
+description: Use for any non-trivial lawt change or design decision — architecture, performance budgets, security review, testing, and definition of done. Load alongside the stack skill for the area you are touching.
 ---
 
-# RawVault engineering standards
+# lawt engineering standards
 
-Companion skills: `software-architecture`, `engineering:system-design`, `engineering:code-review`, `engineering:testing-strategy`, `engineering:architecture` (ADRs), `performance-profiler`, `security-review`. Stack skills: `rawvault-frontend`, `rawvault-aws-cdk`, `rawvault-preview-pipeline`.
+Companion skills: `software-architecture`, `engineering:system-design`, `engineering:code-review`, `engineering:testing-strategy`, `engineering:architecture` (ADRs), `performance-profiler`, `security-review`. Stack skills: `lawt-frontend`, `lawt-aws-cdk`, `lawt-preview-pipeline`.
 
 ## Principles
 0. **Stack:** backend Rust, frontend React + TypeScript (strict). Types flow Rust → TS, not the other way.

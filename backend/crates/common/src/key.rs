@@ -42,12 +42,12 @@ impl OriginalKey {
     ///
     /// # Examples
     /// ```
-    /// use rawvault_common::OriginalKey;
+    /// use lawt_common::OriginalKey;
     /// let key = OriginalKey::parse("all images/100RICOH/R0001234.RAF")?;
     /// assert_eq!(key.gallery(), "100RICOH");
     /// assert_eq!(key.stem(), "R0001234");
     /// assert!(OriginalKey::parse("all images/../secret").is_err());
-    /// # Ok::<(), rawvault_common::KeyError>(())
+    /// # Ok::<(), lawt_common::KeyError>(())
     /// ```
     pub fn parse(key: &str) -> Result<Self, KeyError> {
         if key.is_empty() {

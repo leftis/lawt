@@ -1,5 +1,5 @@
 [package]
-name = "rawvault-preview-generator"
+name = "lawt-preview-generator"
 version = "0.1.0"
 edition = "2021"
 
