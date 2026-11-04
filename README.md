@@ -253,8 +253,7 @@ Measured on the author's library:
 | First full run | about 22 minutes with six parallel workers |
 
 You pay AWS for the generated files, requests, CDN traffic and one secret, on top of wherever your
-originals are stored. Use the [AWS pricing calculator](https://calculator.aws/) with these numbers
-for your own estimate.
+originals are stored. Use the [AWS calculator](https://calculator.aws/) with these numbers for your own estimate.
 
 ## Project layout
 
